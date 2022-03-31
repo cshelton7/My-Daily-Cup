@@ -5,7 +5,7 @@
     <title>Log In</title>
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="{{ client_id }}">
     <script>
         function onSignIn(googleUser) {
             var profile = googleUser.getBasicProfile();
@@ -22,6 +22,7 @@
     <h1> Login Page </h1>
 
     <a href="{{ url_for('home') }}"> Home</a>
+    <br><br>
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
 </body>
