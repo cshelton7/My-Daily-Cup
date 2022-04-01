@@ -1,0 +1,23 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <b>{{message}}</b>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <h1>Here are you're previous entries</h1>
+
+        {% for entry in user_entries: %}
+            <div>
+                <h3>{{entry['title']}}</h3>
+                <p>{{entry['post']}}</p>
+            </div>
+        {% endfor %}
+        
+    </body>
+</html>
