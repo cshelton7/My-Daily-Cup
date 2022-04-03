@@ -24,12 +24,15 @@ def get_weather():
     responses_json = responses.json()
     weather = responses_json["weather"][0]["main"]
     city = responses_json["name"]
+    country = responses_json["sys"]["country"]
     kelvin = responses_json["main"]["temp"]
-    fahrenheit = str(round(kelvin * 1.8 - 459.67, 2)) + " Degrees F°"
+    fahrenheit = str(round(kelvin * 1.8 - 459.67, 2)) + " F°"
     weather_info = {
         "weather": weather,
         "city": city,
         "fahrenheit": fahrenheit,
+        "country" : country,
     }
-    print(fahrenheit)
     return weather_info
+
+get_weather()
