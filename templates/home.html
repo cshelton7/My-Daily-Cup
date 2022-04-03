@@ -14,6 +14,13 @@
                 <input type="submit" name="entries" value='Entries'>
             </form>
         </div>
+        <div id ="weather_info">
+            <p>{{ weather_info['city'] }}</h1>
+            <p> {{ weather_info['weather'] }}<p>
+            <p>{{ weather_info['fahrenheit'] }}<p>
+        </div>
+        <a href="{{ url_for('settings') }}"> Settings</a>
+    
     </body>
 
 
