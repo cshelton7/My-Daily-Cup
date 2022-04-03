@@ -48,13 +48,14 @@ def users_entries():
     if request.method == "POST":
         # The following data is fake entries
         entries = [
-            {'title' : 'Great day',
-             'post': 'Today was a fantastic from sunrise to sunset'
+            {
+                "title": "Great day",
+                "post": "Today was a fantastic from sunrise to sunset",
             },
             {
-                'title' : 'Horrible day',
-                'post' : 'Today was the worst day of my life, smh'
-            }
+                "title": "Horrible day",
+                "post": "Today was the worst day of my life, smh",
+            },
         ]
         return render_template("entries.html", user_entries=entries)
     return render_template("index.html")
