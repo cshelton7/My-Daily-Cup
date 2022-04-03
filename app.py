@@ -41,8 +41,9 @@ def home():
     """
     return render_template(
         "home.html",
-        weather_info = get_weather(),
+        weather_info=get_weather(),
     )
+
 
 @app.route("/settings")
 def settings():
