@@ -8,10 +8,12 @@ from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 
-#Hardcoded the lat/lon until I can figure out best way to implement geolocation feature
+# Hardcoded the lat/lon until I can figure out best way to implement geolocation feature
 LAT = 33.748997
 LON = -84.387985
-OPENWEATHER_URL = f"https://api.openweathermap.org/data/2.5/weather?lat={LAT}&lon={LON}&appid="
+OPENWEATHER_URL = (
+    f"https://api.openweathermap.org/data/2.5/weather?lat={LAT}&lon={LON}&appid="
+)
 
 OPENWEATHER_KEY = os.getenv("OPENWEATHER_KEY")
 
