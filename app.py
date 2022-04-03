@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, redirect, flash, request
 from dotenv import find_dotenv, load_dotenv
+from openweather import get_weather
 
 load_dotenv(find_dotenv())
 
@@ -40,6 +41,16 @@ def home():
     """
     return render_template(
         "home.html",
+        weather_info = get_weather(),
+    )
+
+@app.route("/settings")
+def settings():
+    """
+    Home page of application
+    """
+    return render_template(
+        "settings.html",
     )
 
 
