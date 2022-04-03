@@ -31,8 +31,9 @@ def get_weather():
         "weather": weather,
         "city": city,
         "fahrenheit": fahrenheit,
-        "country" : country,
+        "country": country,
     }
     return weather_info
+
 
 get_weather()
