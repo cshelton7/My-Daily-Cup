@@ -1,48 +1,169 @@
 import os
 from flask import Flask, render_template, redirect, flash, request
+from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
+from models import db, User, Entry
 load_dotenv(find_dotenv())
 
+# Create app, configure db
 app = Flask(__name__)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
-
-# Code from project milestones
-
-# point to heroku database
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-# remove a warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# a way to replace postgres with postgresql & it works for some reason
 if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
     app.config["SQLALCHEMY_DATABASE_URI"] = app.config[
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 
-# 
+# initializing db
+db.init_app(app)
+with app.app_context():
+    db.create_all()
 
-@app.route("/")
+# initializing login feature
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+# route to log a user in
+@auth.route("/", methods=["GET", "POST"])
 def login():
     """
     Login page of application
     """
+    # when the user submits credentials
+    if flask.request.method == "POST":
+        # check form information
+        email = request.form.get("email")
+        password = request.form.get("pass")
+        # if the user exists, log in & redirect to home page
+        try: 
+            userInfo = Users.query.filter_by(email=email).first()
+            if (userInfo):
+                if (check_password_hash(userInfo.password, password)):
+                    login_user(userInfo)
+                    return flask.redirect(flask.url_for("home"))
+                # if the user isn't logged in, the password is incorrect
+                flask.flash("Password is not correct. Please try again.")
+        # if the user does not exist, redirect to signup
+        except:
+            flask.flash("No user with that email found. Register below!")
+            return flask.redirect(flask.url_for("signup"))
     return render_template(
         "login.html",
-        client_id = os.getenv("GSCLIENTID")
     )
 
+# route to allow a user to register
+@auth.route("/signup", methods=["GET", "POST"])
+def signup():
+    """
+    Signup page of application
+    """
+    # when the user submits credentials
+    if flask.request.method == "POST":
+        email = request.form.get("email")
+        username = request.form.get("username")
+        password = request.form.get("pass")
+        # hash the password to store in the db
+        try:
+            # includes password hashing with the 256 bit-long encrypting method
+            registerUser = User(email=email, username=username, password=generate_password_hash(password, method='sha256'))
+            db.session.add(registerUser)
+            db.session.commit()
+            flask.flash("You have successfully registered.")
+            return flask.redirect(flask.url_for("login"))
+        # if it throws an error, some input has conflicted with the rules
+        except:
+            flask.flash("Something went wrong. Either that username is taken or you have left an entry blank. Please try again.")
+            return flask.redirect(flask.url_for("signup"))
+    return render_template("signup.html")
+
+# route to allow user to sign out
+@app.route("/signout")
+@login_required
+def signout():
+    logout_user()
+    flask.flash("You  have successfully logged out.")
+    return flask.redirect(flask.url_for("login"))
+
+# route to user's home page
 @app.route("/home")
+@login_required
 def home():
     """
     Home page of application
     """
     return render_template(
         "home.html",
+         user=current_user.username,
+        weather_info=get_weather(),
     )
+
+# route to apply user settings
+# this is still in progress. how to store preferences, etc
+@app.route("/settings")
+@login_required
+def settings():
+    """
+    Home page of application
+    """
+    return render_template(
+        "settings.html",
+    )
+
+@app.route("/view_entries", methods=["GET", "POST"])
+@login_required
+def users_entries():
+    """The following data is fake entries that'll be deleted later
+    when our database is good to go.
+    """
+    entries = [
+        {"title": "Great day", "post": "Today was a fantastic from sunrise to sunset"},
+        {"title": "Horrible day", "post": "Today was the worst day of my life, smh"},
+        {
+            "title": "Spontaneous",
+            "post": "Today, me and wife went on an amazing adventure in the wilderness.",
+        },
+    ]
+    """Here we will call a method that queries for the
+        entries made by our user from the database. For the time
+        being I'll just use the value from the entries
+        list that I made above
+    """
+    return render_template("entries.html", user_entries=entries, length=len(entries))
+
+
+@app.route("/delete_entry", methods=["GET", "POST"])
+def delete_entry():
+    if request.method == "POST":
+        """Here we will call a method that removes the
+        entry we deleted from the database. For the time
+        being I'll just print the value(index of entry deleted).
+        Later I'll replace with a database algorith"""
+
+        index = int(flask.request.form["Delete"])
+        print(index)
+    return flask.redirect(flask.url_for("users_entries"))
+
+@app.route("/add_entry", methods=["GET", "POST"])
+def add():
+    # new entry object information
+    poster = current_user.id
+    title = flask.request.form("title")
+    contents = flask.request.form("entry")
+    
+    newEntry = Entry(user=poster, title=title, content=contents, timestamp=datetime.now())
+    db.session.add(newEntry)
+    db.session.commit()
+    return flask.redirect(flask.url_for("users_entries"))
 
 if __name__ == "__main__":
     app.run(
-       # host=os.getenv("IP", "0.0.0.0"), 
-       # port=int(os.getenv("PORT", 8080)), 
+        host=os.getenv("IP", "0.0.0.0"), 
+        port=int(os.getenv("PORT", 8080)), 
         debug=True
     )

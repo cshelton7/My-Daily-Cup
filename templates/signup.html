@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Log In</title>
+    <title>Sign Up</title>
 </head>
 
 <body>
@@ -15,9 +15,10 @@
     {% endwith %}
     <br><br>
 
-    <h1> Login to your daily cup: </h1>
-    <form action="/" method="POST">
+    <h1> Please enter your email, then create a unique username and password" </h1>
+    <form action="/signup" method="POST">
         <input type="text" placeholder="Email" name="email">
+        <input type="text" placeholder="Username" name="username">
         <input type="password" placeholder="Password" name="pass">
     </form>
 </body>
