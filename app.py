@@ -27,9 +27,11 @@ with app.app_context():
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
+
 
 # route to log a user in
 @auth.route("/", methods=["GET", "POST"])
@@ -43,10 +45,10 @@ def login():
         email = request.form.get("email")
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
-        try: 
+        try:
             userInfo = Users.query.filter_by(email=email).first()
-            if (userInfo):
-                if (check_password_hash(userInfo.password, password)):
+            if userInfo:
+                if check_password_hash(userInfo.password, password):
                     login_user(userInfo)
                     return flask.redirect(flask.url_for("home"))
                 # if the user isn't logged in, the password is incorrect
@@ -74,16 +76,23 @@ def signup():
         # hash the password to store in the db
         try:
             # includes password hashing with the 256 bit-long encrypting method
-            registerUser = User(email=email, username=username, password=generate_password_hash(password, method='sha256'))
+            registerUser = User(
+                email=email,
+                username=username,
+                password=generate_password_hash(password, method="sha256"),
+            )
             db.session.add(registerUser)
             db.session.commit()
             flask.flash("You have successfully registered.")
             return flask.redirect(flask.url_for("login"))
         # if it throws an error, some input has conflicted with the rules
         except:
-            flask.flash("Something went wrong. Either that username is taken or you have left an entry blank. Please try again.")
+            flask.flash(
+                "Something went wrong. Either that username is taken or you have left an entry blank. Please try again."
+            )
             return flask.redirect(flask.url_for("signup"))
     return render_template("signup.html")
+
 
 # route to allow user to sign out
 @app.route("/signout")
@@ -92,6 +101,7 @@ def signout():
     logout_user()
     flask.flash("You  have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
+
 
 # route to user's home page
 @app.route("/home")
@@ -102,9 +112,10 @@ def home():
     """
     return render_template(
         "home.html",
-         user=current_user.username,
+        user=current_user.username,
         weather_info=get_weather(),
     )
+
 
 # route to apply user settings
 # this is still in progress. how to store preferences, etc
@@ -153,22 +164,23 @@ def delete_entry():
         print(index)
     return flask.redirect(flask.url_for("users_entries"))
 
+
 @app.route("/add_entry", methods=["GET", "POST"])
 def add():
     # new entry object information
     poster = current_user.id
     title = flask.request.form("title")
     contents = flask.request.form("entry")
-    
-    newEntry = Entry(user=poster, title=title, content=contents, timestamp=datetime.now())
+
+    newEntry = Entry(
+        user=poster, title=title, content=contents, timestamp=datetime.now()
+    )
     db.session.add(newEntry)
     db.session.commit()
     return flask.redirect(flask.url_for("users_entries"))
 
+
 if __name__ == "__main__":
     app.run(
-        host=os.getenv("IP", "0.0.0.0"), 
-        port=int(os.getenv("PORT", 8080)), 
-        debug=True
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
     )
-
