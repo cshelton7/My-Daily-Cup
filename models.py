@@ -4,6 +4,7 @@ from flask_login import UserMixin
 db = SQLAlchemy()
 
 
+
 class User(db.Model, UserMixin):
     """This will create the user object
     portion of our database and hold the users.
@@ -16,14 +17,15 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return "<Username %r>" % self.username
 
-
 class Entry(db.Model):
     """This will create our entry object portion,
     which will be stored in our database.
     """
 
     id = db.Column(db.Integer, primary_key=True)
+
     user = db.Column(db.Integer, nullable=False)
+
     title = db.Column(db.String(50), nullable=False)
     content = db.Column(db.String(1500), nullable=False)
     timestamp = db.Column(db.String(100))
@@ -35,3 +37,4 @@ class Entry(db.Model):
             self.title,
             self.timestamp,
         )
+

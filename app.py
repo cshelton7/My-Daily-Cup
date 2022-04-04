@@ -4,6 +4,8 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from models import db, User, Entry
+from openweather import get_weather
+
 load_dotenv(find_dotenv())
 
 # Create app, configure db
@@ -56,6 +58,7 @@ def login():
     return render_template(
         "login.html",
     )
+
 
 # route to allow a user to register
 @auth.route("/signup", methods=["GET", "POST"])
@@ -115,6 +118,7 @@ def settings():
         "settings.html",
     )
 
+
 @app.route("/view_entries", methods=["GET", "POST"])
 @login_required
 def users_entries():
@@ -167,3 +171,4 @@ if __name__ == "__main__":
         port=int(os.getenv("PORT", 8080)), 
         debug=True
     )
+
