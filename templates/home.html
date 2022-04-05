@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
+ 
+<head>
+    <title>Home</title>
+</head>
 
-    </head>
-    <body>
-        <h1>Home page</h1>
-        
-        <div class="view_entries">
-
-            <form action="/view_entries" method='GET'>
-
-                <input type="submit" name="entries" value='Entries'>
-            </form>
-        </div>
-        <div id ="weather_info">
-            <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</h1>
-            <p> {{ weather_info['weather'] }}<p>
-            <p>{{ weather_info['fahrenheit'] }}<p>
-        </div>
+<body>
+    <div id="nav">
+        <a href="{{ url_for('home') }}"> Home</a>
+        <a href="{{ url_for('users_entries') }}"> Entries</a>
         <a href="{{ url_for('settings') }}"> Settings</a>
-    
-    </body>
+        <a href="{{ url_for('signout') }}"> Log Out</a>
+    </div>
+    <h1>Hello, {{user}}</h1>
 
+    <div id="weather_info">
+        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p>
+        <p> {{ weather_info['weather'] }}</p>
+        <p>{{ weather_info['fahrenheit'] }}</p>
+    </div>
 
+    <div id="maincontent">
+        <form action="/addentry" method="POST">
+            <input type="text" placeholder="Title" name="title">
+            <input type="text" placeholder="How are you feeling today?" name="entry">
+            <input type="submit" value="Post">
+        </form>
+        <!-- next add task form -->
+    </div>
+</body>
 </html>
