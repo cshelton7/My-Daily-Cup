@@ -13,3 +13,9 @@ To ensure Openweather works, request an API Key from here
 
 After recieving an API Key, create a .env file in the directory (if you have not done so already)
 and paste 'OPENWEATHER_KEY = "<YOUR_API_KEY_HERE>"'
+
+# Flask_Login
+To use this library in your app, you must make sure to generate a secret key to store in your .env file and/or Heroku config variables.
+
+To generate your key, run:
+python3 -c 'import secrets; print(secrets.token_hex())'
