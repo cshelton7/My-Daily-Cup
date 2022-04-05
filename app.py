@@ -1,6 +1,13 @@
 import os
 from flask import Flask, render_template, redirect, flash, request
 from datetime import datetime
+from flask_login import (
+    LoginManager,
+    login_required,
+    login_user,
+    logout_user,
+    current_user,
+)
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from models import db, User, Entry
