@@ -1,4 +1,5 @@
 import os
+import flask
 from flask import Flask, render_template, redirect, flash, request, Blueprint
 from datetime import datetime
 from flask_login import (
@@ -191,5 +192,7 @@ def add():
 
 if __name__ == "__main__":
     app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
+        #host=os.getenv("IP", "0.0.0.0"), 
+        #port=int(os.getenv("PORT", 8080)), 
+        debug=True
     )
