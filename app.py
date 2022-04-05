@@ -39,7 +39,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 
 # route to log a user in
@@ -56,7 +56,7 @@ def login():
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
         try:
-            userInfo = Users.query.filter_by(email=email).first()
+            userInfo = User.query.filter_by(email=email).first()
             if userInfo:
                 if check_password_hash(userInfo.password, password):
                     login_user(userInfo)
