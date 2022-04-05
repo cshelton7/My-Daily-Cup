@@ -11,9 +11,8 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
-
-# from models import User, Entry, TestModel # TestModel for db testing, will uncomment after first test deployment
 from openweather import get_weather
+from models import db, User, Entry
 
 load_dotenv(find_dotenv())
 
@@ -28,16 +27,11 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 
-# debug code for db
-from flask_sqlalchemy import SQLAlchemy
-
 db = SQLAlchemy(app)
 
-# commenting out code for testing
-# initializing db
-# db.init_app(app)
-# with app.app_context():
-# db.create_all()
+db.init_app(app)
+with app.app_context():
+    db.create_all()
 
 # initializing login feature
 login_manager = LoginManager()
