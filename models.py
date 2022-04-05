@@ -1,7 +1,11 @@
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
-db = SQLAlchemy()
+# uncomment after testing
+# db = SQLAlchemy()
+
+# debug code for db
+from app import db
 
 
 class User(db.Model, UserMixin):
@@ -38,3 +42,18 @@ class Entry(db.Model):
             self.title,
             self.timestamp,
         )
+
+
+# new model to test the db
+class TestModel(db.Model, UserMixin):
+    """This will create the user object
+    portion of our database and hold the users.
+    """
+
+    id = db.Column(db.Integer, primary_key=True)
+    testing = db.Column(db.String(100), unique=True, nullable=False)
+    columns = db.Column(db.String(20), unique=True, nullable=False)
+    forpsql = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return "<Username %r>" % self.username
