@@ -11,7 +11,8 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
-#from models import User, Entry, TestModel
+
+# from models import User, Entry, TestModel
 from openweather import get_weather
 
 load_dotenv(find_dotenv())
@@ -33,9 +34,9 @@ db = SQLAlchemy(app)
 
 # commenting out code for testing
 # initializing db
-#db.init_app(app)
-#with app.app_context():
-    #db.create_all()
+# db.init_app(app)
+# with app.app_context():
+# db.create_all()
 
 # initializing login feature
 login_manager = LoginManager()
@@ -198,7 +199,7 @@ def add():
 
 if __name__ == "__main__":
     app.run(
-        #host=os.getenv("IP", "0.0.0.0"), 
-        #port=int(os.getenv("PORT", 8080)), 
+        # host=os.getenv("IP", "0.0.0.0"),
+        # port=int(os.getenv("PORT", 8080)),
         debug=True
     )
