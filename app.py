@@ -11,7 +11,7 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
-from models import db, User, Entry
+#from models import User, Entry, TestModel
 from openweather import get_weather
 
 load_dotenv(find_dotenv())
@@ -27,10 +27,15 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy(app)
+
+# commenting out code for testing
 # initializing db
-db.init_app(app)
-with app.app_context():
-    db.create_all()
+#db.init_app(app)
+#with app.app_context():
+    #db.create_all()
 
 # initializing login feature
 login_manager = LoginManager()
@@ -39,7 +44,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 
 # route to log a user in
@@ -56,7 +61,7 @@ def login():
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
         try:
-            userInfo = Users.query.filter_by(email=email).first()
+            userInfo = User.query.filter_by(email=email).first()
             if userInfo:
                 if check_password_hash(userInfo.password, password):
                     login_user(userInfo)
@@ -193,5 +198,7 @@ def add():
 
 if __name__ == "__main__":
     app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
+        #host=os.getenv("IP", "0.0.0.0"), 
+        #port=int(os.getenv("PORT", 8080)), 
+        debug=True
     )
