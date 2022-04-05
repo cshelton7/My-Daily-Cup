@@ -41,7 +41,8 @@ def load_user(user_id):
 
 
 # route to log a user in
-@auth.route("/", methods=["GET", "POST"])
+# add auth back later
+@app.route("/", methods=["GET", "POST"])
 def login():
     """
     Login page of application
@@ -70,7 +71,8 @@ def login():
 
 
 # route to allow a user to register
-@auth.route("/signup", methods=["GET", "POST"])
+# add auth back later
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
     """
     Signup page of application
