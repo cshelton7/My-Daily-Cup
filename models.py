@@ -1,9 +1,9 @@
 #from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-
+# uncomment after testing
 #db = SQLAlchemy()
 
-# added to fix the models
+# debug code for db
 from app import db
 
 class User(db.Model, UserMixin):
