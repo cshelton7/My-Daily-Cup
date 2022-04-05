@@ -147,7 +147,7 @@ def settings():
 def users_entries():
     """The following data is fake entries that'll be deleted later
     when our database is good to go.
-    
+
     entries = [
         {"title": "Great day", "post": "Today was a fantastic from sunrise to sunset"},
         {"title": "Horrible day", "post": "Today was the worst day of my life, smh"},
@@ -164,9 +164,11 @@ def users_entries():
     prev_entries = Entry.query.filter_by(current_user.id)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
-        return redirect(flask.url_for('home'))
+        return redirect(flask.url_for("home"))
     else:
-        return render_template("entries.html", user_entries=prev_entries, length=len(prev_entries))
+        return render_template(
+            "entries.html", user_entries=prev_entries, length=len(prev_entries)
+        )
 
 
 @app.route("/delete_entry", methods=["GET", "POST"])
@@ -179,10 +181,10 @@ def delete_entry():
 
         index = int(flask.request.form["Delete"])
         # Later, I'll store the following algorithm in another file
-        entry = Entry.query.filter_by(id = index)
+        entry = Entry.query.filter_by(id=index)
         if entry:
             db.session.delete(entry)
-            db.session.commit() 
+            db.session.commit()
     return flask.redirect(flask.url_for("users_entries"))
 
 
