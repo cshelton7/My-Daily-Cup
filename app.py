@@ -127,12 +127,10 @@ def home():
     )
 
 def add_task_list(): 
-    poster = current_user.id
     title = flask.request.form("task_title")
-    contents = flask.request.form("entry")
 
     newTaskList = Task(
-        user=poster, title=title, content=contents, timestamp=datetime.now()
+       title=title, timestamp=datetime.now()
     )
     db.session.add(newTaskList)
     db.session.commit()
@@ -140,10 +138,52 @@ def add_task_list():
     return flask.redirect(flask.url_for("home") )
 
 def delete_task_list():
-    return
+    if request.method == "POST":
+      
+
+        index = int(flask.request.form["Delete"])
+        # Later, I'll store the following algorithm in another file
+        task_list = Task.query.filter_by(id=index)
+        if task_list:
+            db.session.delete(task_list)
+            db.session.commit()
+    return flask.redirect(flask.url_for("home"))
 
 def add_task_to_list(): 
-    return
+        # new entry object information
+    contents = flask.request.form("task_entry")
+
+    newTask = Task(
+       content=contents, timestamp=datetime.now()
+    )
+    db.session.add(newTask)
+    db.session.commit()
+    return flask.redirect(flask.url_for("home"))
+
+def display_task_list(): 
+    """The following data is fake entries that'll be deleted later
+    when our database is good to go.
+    entries = [
+        {"title": "Great day", "post": "Today was a fantastic from sunrise to sunset"},
+        {"title": "Horrible day", "post": "Today was the worst day of my life, smh"},
+        {
+            "title": "Spontaneous",
+            "post": "Today, me and wife went on an amazing adventure in the wilderness.",
+        },
+    ]
+    Here we will call a method that queries for the
+        entries made by our user from the database. For the time
+        being I'll just use the value from the entries
+        list that I made above
+    """
+    user_task_lists = Task.query.filter_by(current_user.id)
+    if user_task_lists is None:
+        flask.flash("Sorry, you have no task lists at the moment, please add one.")
+        return redirect(flask.url_for("home"))
+    else:
+        return render_template(
+            "home.html", user_task_lists=user_task_lists, length=len(user_task_lists)
+        )
 
 # route to apply user settings
 # this is still in progress. how to store preferences, etc
