@@ -7,7 +7,7 @@ def get_entries(user_id):
 
 
 def deleteEntry(entry_id):
-    entry = Entry.query.filter_by(id=entry_id)
+    entry = Entry.query.filter_by(id=entry_id).first()
     if entry:
         db.session.delete(entry)
         db.session.commit()
