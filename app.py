@@ -126,14 +126,18 @@ def home():
         weather_info=get_weather(),
     )
 
-def add_entry(): 
-    return 
+
+def add_entry():
+    return
+
 
 def delete_entry():
     return
 
-def add_to_list(): 
+
+def add_to_list():
     return
+
 
 # route to apply user settings
 # this is still in progress. how to store preferences, etc
