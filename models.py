@@ -4,7 +4,7 @@ from flask_login import UserMixin
 db = SQLAlchemy()
 
 
-class User(db.Model, UserMixin):
+class Joes(db.Model, UserMixin):
     """This will create the user object
     portion of our database and hold the users.
     """
@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
-        return "<Username %r>" % self.username
+        return "Username %r" % self.username
 
 
 class Entry(db.Model):
