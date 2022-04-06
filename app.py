@@ -55,7 +55,7 @@ def login():
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
         try:
-            userInfo = User.query.filter_by(email=email).first()
+            userInfo = Joes.query.filter_by(email=email).first()
             if check_password_hash(userInfo.password, password):
                 login_user(userInfo)
                 return flask.redirect(flask.url_for("home"))
@@ -191,7 +191,7 @@ def add():
 
 if __name__ == "__main__":
     app.run(
-        host=os.getenv("IP", "0.0.0.0"),
-        port=int(os.getenv("PORT", 8080)),
+       # host=os.getenv("IP", "0.0.0.0"),
+       # port=int(os.getenv("PORT", 8080)),
         debug=True
     )
