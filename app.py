@@ -159,7 +159,8 @@ def users_entries():
         being I'll just use the value from the entries
         list that I made above
     """
-    prev_entries = Entry.query.filter_by(current_user.id)
+    # The following algorithm in database functions file
+    prev_entries = get_entries(current_user.id)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
         return redirect(flask.url_for("home"))
@@ -178,11 +179,8 @@ def delete_entry():
         Later I'll replace with a database algorith"""
 
         index = int(flask.request.form["Delete"])
-        # Later, I'll store the following algorithm in another file
-        entry = Entry.query.filter_by(id=index)
-        if entry:
-            db.session.delete(entry)
-            db.session.commit()
+        # The following algorithm in database functions file
+        deleteEntry(index)
     return flask.redirect(flask.url_for("users_entries"))
 
 
