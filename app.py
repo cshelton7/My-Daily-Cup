@@ -32,6 +32,8 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+####### Code commented out to show agile story for login #######
+"""
 # initializing login feature
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -47,7 +49,7 @@ def load_user(user_id):
 @app.route("/", methods=["GET", "POST"])
 def login():
     """
-    Login page of application
+ #   Login page of application
     """
     # when the user submits credentials
     if flask.request.method == "POST":
@@ -76,7 +78,7 @@ def login():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     """
-    Signup page of application
+  #  Signup page of application
     """
     # when the user submits credentials
     if flask.request.method == "POST":
@@ -112,6 +114,8 @@ def signout():
     flask.flash("You  have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
 
+"""
+#############################################
 
 # route to user's home page
 @app.route("/home")
