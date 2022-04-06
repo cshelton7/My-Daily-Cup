@@ -35,9 +35,13 @@ with app.app_context():
 # initializing login feature
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return Joes.query.get(int(user_id))
+
+
 # route to log a user in
 # add auth back later
 @app.route("/", methods=["GET", "POST"])
@@ -65,6 +69,8 @@ def login():
     return render_template(
         "login.html",
     )
+
+
 # route to allow a user to register
 # add auth back later
 @app.route("/signup", methods=["GET", "POST"])
@@ -96,6 +102,8 @@ def signup():
             )
             return flask.redirect(flask.url_for("signup"))
     return render_template("signup.html")
+
+
 # route to allow user to sign out
 @app.route("/signout")
 @login_required
@@ -103,6 +111,7 @@ def signout():
     logout_user()
     flask.flash("You  have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
+
 
 # route to user's home page
 @app.route("/home")
