@@ -13,7 +13,19 @@
 
                 <input type="submit" name="entries" value='Entries'>
             </form>
-      
+
+            <form action= "home.html" method="POST">
+                <label for="task_form">Add Entry:</label><br>
+                <textarea rows="3" cols="30" name="task_form" id="task_form"></textarea>
+                <input type="submit" value ="Submit">
+                <input type="reset" name="Clear Text">
+            </form>
+            <form>
+                <label for="tag">Tag:</label>
+                <input type="text" name="entry_tag" id="entry_tag">
+            </form>
+           
+
         <a href="{{ url_for('settings') }}"> Settings</a>
     
     </body>

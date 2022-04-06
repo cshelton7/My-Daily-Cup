@@ -44,6 +44,14 @@ def home():
         #weather_info=get_weather(),
     )
 
+def add_entry(): 
+    return 
+
+def delete_entry():
+    return
+
+def add_to_list(): 
+    return
 
 @app.route("/settings")
 def settings():
