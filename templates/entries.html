@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
 
@@ -13,16 +14,17 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+
         <h1>Here are you're previous entries</h1>
 
 
         {% for i in range(0,length) : %}
             <div class="container p-2 m-5 bg-dark text-white">
                 <form action="/delete_entry" method='POST'>
-                    <button type='submit' name="Delete" value={{i}}> X </button>
+                    <button type='submit' name="Delete" value={{user_entries[i].id}}> X </button>
                 </form>
-                <h3>{{user_entries[i]['title']}}</h3>
-                <p>{{user_entries[i]['post']}}</p>
+                <h3>{{user_entries[i].title}}</h3>
+                <p>{{user_entries[i].content}}</p>
             </div>
         {% endfor %}
     </body>
