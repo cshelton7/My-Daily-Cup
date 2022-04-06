@@ -31,15 +31,15 @@
         <!-- next add task form -->
 
     <div id ="task_form"> 
-        <form action= "home.html" method="POST">
+        <form action= "/home" method="POST">
             <label for="task_form">Create New Task List</label><br>
             <input type = "text" placeholder = "Title" name = "task_title">
             <input type="submit" value ="Add" name = "add_task_list">
         </form>
     </div>
 
-    <div id = "show_task_lists">
-        <form action = "home.html" method = "GET">
+    <div id = "edit_task_lists">
+        <form action = "/home" method = "POST">
             <input type = "submit" value = "x" name = "delete_task_list">
             <input type = "submit" value = "+" name = "add_task">
         </form>

@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
 from database_functions import get_entries, deleteEntry
-from models import db, Joes, Entry
+from models import db, Joes, Entry, Task
 
 load_dotenv(find_dotenv())
 
@@ -114,7 +114,7 @@ def signout():
 
 
 # route to user's home page
-@app.route("/home")
+@app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
     """
@@ -126,13 +126,23 @@ def home():
         weather_info=get_weather(),
     )
 
-def add_entry(): 
-    return 
+def add_task_list(): 
+    poster = current_user.id
+    title = flask.request.form("task_title")
+    contents = flask.request.form("entry")
 
-def delete_entry():
+    newTaskList = Task(
+        user=poster, title=title, content=contents, timestamp=datetime.now()
+    )
+    db.session.add(newTaskList)
+    db.session.commit()
+
+    return flask.redirect(flask.url_for("home") )
+
+def delete_task_list():
     return
 
-def add_to_list(): 
+def add_task_to_list(): 
     return
 
 # route to apply user settings
