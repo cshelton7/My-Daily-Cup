@@ -11,9 +11,9 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
-from models import db, User, Entry
 from openweather import get_weather
 from database_functions import get_entries, deleteEntry
+from models import db, Joes, Entry
 
 load_dotenv(find_dotenv())
 
@@ -28,7 +28,6 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 
-# initializing db
 db.init_app(app)
 with app.app_context():
     db.create_all()
@@ -40,7 +39,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.get(int(user_id))
+    return Joes.query.get(int(user_id))
 
 
 # route to log a user in
@@ -57,11 +56,10 @@ def login():
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
         try:
-            userInfo = Users.query.filter_by(email=email).first()
-            if userInfo:
-                if check_password_hash(userInfo.password, password):
-                    login_user(userInfo)
-                    return flask.redirect(flask.url_for("home"))
+            userInfo = User.query.filter_by(email=email).first()
+            if check_password_hash(userInfo.password, password):
+                login_user(userInfo)
+                return flask.redirect(flask.url_for("home"))
                 # if the user isn't logged in, the password is incorrect
                 flask.flash("Password is not correct. Please try again.")
         # if the user does not exist, redirect to signup
@@ -88,7 +86,7 @@ def signup():
         # hash the password to store in the db
         try:
             # includes password hashing with the 256 bit-long encrypting method
-            registerUser = User(
+            registerUser = Joes(
                 email=email,
                 username=username,
                 password=generate_password_hash(password, method="sha256"),
