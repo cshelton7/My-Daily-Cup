@@ -12,7 +12,6 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import get_entries, deleteEntry
 from models import db, Joes, Entry
 
 load_dotenv(find_dotenv())
@@ -32,8 +31,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-####### Code commented out to show agile story for login #######
-"""
 # initializing login feature
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -45,11 +42,10 @@ def load_user(user_id):
 
 
 # route to log a user in
-# add auth back later
 @app.route("/", methods=["GET", "POST"])
 def login():
     """
- #   Login page of application
+    Login page of application
     """
     # when the user submits credentials
     if flask.request.method == "POST":
@@ -74,11 +70,10 @@ def login():
 
 
 # route to allow a user to register
-# add auth back later
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     """
-  #  Signup page of application
+    Signup page of application
     """
     # when the user submits credentials
     if flask.request.method == "POST":
@@ -114,8 +109,6 @@ def signout():
     flask.flash("You  have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
 
-"""
-#############################################
 
 # route to user's home page
 @app.route("/home")
@@ -149,7 +142,7 @@ def settings():
 def users_entries():
     """The following data is fake entries that'll be deleted later
     when our database is good to go.
-
+    """
     entries = [
         {"title": "Great day", "post": "Today was a fantastic from sunrise to sunset"},
         {"title": "Horrible day", "post": "Today was the worst day of my life, smh"},
@@ -158,19 +151,12 @@ def users_entries():
             "post": "Today, me and wife went on an amazing adventure in the wilderness.",
         },
     ]
-    Here we will call a method that queries for the
+    """Here we will call a method that queries for the
         entries made by our user from the database. For the time
         being I'll just use the value from the entries
         list that I made above
     """
-    prev_entries = Entry.query.filter_by(current_user.id)
-    if prev_entries is None:
-        flask.flash("Sorry, you have no entries at the moment, please add one.")
-        return redirect(flask.url_for("home"))
-    else:
-        return render_template(
-            "entries.html", user_entries=prev_entries, length=len(prev_entries)
-        )
+    return render_template("entries.html", user_entries=entries, length=len(entries))
 
 
 @app.route("/delete_entry", methods=["GET", "POST"])
@@ -182,11 +168,7 @@ def delete_entry():
         Later I'll replace with a database algorith"""
 
         index = int(flask.request.form["Delete"])
-        # Later, I'll store the following algorithm in another file
-        entry = Entry.query.filter_by(id=index)
-        if entry:
-            db.session.delete(entry)
-            db.session.commit()
+        print(index)
     return flask.redirect(flask.url_for("users_entries"))
 
 
@@ -207,5 +189,7 @@ def add():
 
 if __name__ == "__main__":
     app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
+       host=os.getenv("IP", "0.0.0.0"),
+       port=int(os.getenv("PORT", 8080)),
+        debug=True
     )

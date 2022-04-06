@@ -37,7 +37,6 @@ class Entry(db.Model):
             self.timestamp,
         )
 
-
 class Task(db.Model):
     """This will create our entry object portion,
     which will be stored in our database.
