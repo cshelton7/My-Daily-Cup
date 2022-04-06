@@ -143,8 +143,8 @@ def settings():
 @app.route("/view_entries", methods=["GET", "POST"])
 @login_required
 def users_entries():
-    ''' When the user enters there entries page, we'll then use this function
-        to display all of their previous entries. '''
+    """When the user enters there entries page, we'll then use this function
+    to display all of their previous entries."""
     # The following algorithm in the database functions file
     prev_entries = get_entries(current_user.id)
     print(prev_entries[0].timestamp)
