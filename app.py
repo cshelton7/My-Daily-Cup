@@ -33,7 +33,6 @@ with app.app_context():
     db.create_all()
 
 
-
 # route to user's home page
 @app.route("/home")
 @login_required
