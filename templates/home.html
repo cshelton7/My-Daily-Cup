@@ -1,34 +1,50 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
 
-    </head>
-    <body>
-        <h1>Home page</h1>
-        
-        <div class="view_entries">
+<head>
+    <title>Home</title>
+</head>
 
-            <form action="/view_entries" method='GET'>
-
-                <input type="submit" name="entries" value='Entries'>
-            </form>
-
-            <form action= "home.html" method="POST">
-                <label for="task_form">Add Entry:</label><br>
-                <textarea rows="3" cols="30" name="task_form" id="task_form"></textarea>
-                <input type="submit" value ="Submit">
-                <input type="reset" name="Clear Text">
-            </form>
-            <form>
-                <label for="tag">Tag:</label>
-                <input type="text" name="entry_tag" id="entry_tag">
-            </form>
-           
-
+<body>
+    <div id="nav">
+        <a href="{{ url_for('home') }}"> Home</a>
+        <a href="{{ url_for('users_entries') }}"> Entries</a>
         <a href="{{ url_for('settings') }}"> Settings</a>
-    
-    </body>
+        <a href="{{ url_for('signout') }}"> Log Out</a>
+    </div>
+    <h1>Hello, {{user}}</h1>
 
+    <div id="weather_info">
+        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p>
+        <p> {{ weather_info['weather'] }}</p>
+        <p>{{ weather_info['fahrenheit'] }}</p>
+    </div>
+
+    <div id="maincontent">
+        <form action="/addentry" method="POST">
+            <input type="text" placeholder="Title" name="title">
+            <input type="text" placeholder="How are you feeling today?" name="entry">
+            <input type="submit" value="Post">
+        </form>
+    </div>
+        <!-- next add task form -->
+
+    <div id ="task_form"> 
+        <form action= "home.html" method="POST">
+            <label for="task_form">Create New Task List</label><br>
+            <input type = "text" placeholder = "Title" name = "task_title">
+            <input type="submit" value ="Add" name = "add_task_list">
+        </form>
+    </div>
+
+    <div id = "show_task_lists">
+        <form action = "home.html" method = "GET">
+            <input type = "submit" value = "x" name = "delete_task_list">
+            <input type = "submit" value = "+" name = "add_task">
+        </form>
+    </div>
+    
+</body>
 
 </html>

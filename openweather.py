@@ -18,7 +18,7 @@ OPENWEATHER_URL = (
 OPENWEATHER_KEY = os.getenv("OPENWEATHER_KEY")
 
 
-'''def get_weather():
+def get_weather():
     """Recieves responses from openweather API for temperture, city and current weather."""
     responses = requests.get(OPENWEATHER_URL + OPENWEATHER_KEY)
     responses_json = responses.json()
@@ -36,4 +36,4 @@ OPENWEATHER_KEY = os.getenv("OPENWEATHER_KEY")
     return weather_info
 
 
-get_weather()'''
+
