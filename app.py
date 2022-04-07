@@ -8,7 +8,6 @@ from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv())
 
 # Create app, configure db
-def create_app():
     app = Flask(__name__)
     app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
     app.secret_key = os.getenv("SECRET")
@@ -44,4 +43,7 @@ def create_app():
         # since the user_id is just the primary key of our user table, use it in the query for the user
         return Joes.query.get(int(user_id))
 
-    return app
+if __name__ == "__main__":
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
+    )
