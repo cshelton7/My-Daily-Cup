@@ -12,7 +12,7 @@ def get_trends():
     
     # getting authorization for our keys
     api = tweepy.API(auth)
-
+    
     # WOEID of the United States
     woeid = 23424977
 
