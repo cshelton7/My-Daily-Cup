@@ -11,12 +11,13 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
-from models import db, User, Entry
 from openweather import get_weather
 from database_functions import get_entries, deleteEntry
 from models import db, Joes, Entry
+
 from fun_fact import fun_fact
 from nyt import nyt_results
+
 
 
 load_dotenv(find_dotenv())
@@ -32,7 +33,6 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 
-# initializing db
 db.init_app(app)
 with app.app_context():
     db.create_all()
@@ -44,7 +44,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return Joes.query.get(int(user_id))
 
 
 # route to log a user in
@@ -61,11 +61,10 @@ def login():
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
         try:
-            userInfo = User.query.filter_by(email=email).first()
-            if userInfo:
-                if check_password_hash(userInfo.password, password):
-                    login_user(userInfo)
-                    return flask.redirect(flask.url_for("home"))
+            userInfo = Joes.query.filter_by(email=email).first()
+            if check_password_hash(userInfo.password, password):
+                login_user(userInfo)
+                return flask.redirect(flask.url_for("home"))
                 # if the user isn't logged in, the password is incorrect
                 flask.flash("Password is not correct. Please try again.")
         # if the user does not exist, redirect to signup
@@ -92,7 +91,7 @@ def signup():
         # hash the password to store in the db
         try:
             # includes password hashing with the 256 bit-long encrypting method
-            registerUser = User(
+            registerUser = Joes(
                 email=email,
                 username=username,
                 password=generate_password_hash(password, method="sha256"),
@@ -151,23 +150,18 @@ def settings():
 @app.route("/view_entries", methods=["GET", "POST"])
 @login_required
 def users_entries():
-    """The following data is fake entries that'll be deleted later
-    when our database is good to go.
-    """
-    entries = [
-        {"title": "Great day", "post": "Today was a fantastic from sunrise to sunset"},
-        {"title": "Horrible day", "post": "Today was the worst day of my life, smh"},
-        {
-            "title": "Spontaneous",
-            "post": "Today, me and wife went on an amazing adventure in the wilderness.",
-        },
-    ]
-    """Here we will call a method that queries for the
-        entries made by our user from the database. For the time
-        being I'll just use the value from the entries
-        list that I made above
-    """
-    return render_template("entries.html", user_entries=entries, length=len(entries))
+    """When the user enters there entries page, we'll then use this function
+    to display all of their previous entries."""
+    # The following algorithm in the database functions file
+    prev_entries = get_entries(current_user.id)
+    print(prev_entries[0].timestamp)
+    if prev_entries is None:
+        flask.flash("Sorry, you have no entries at the moment, please add one.")
+        return redirect(flask.url_for("home"))
+    else:
+        return render_template(
+            "entries.html", user_entries=prev_entries, length=len(prev_entries)
+        )
 
 
 @app.route("/delete_entry", methods=["GET", "POST"])
@@ -179,7 +173,8 @@ def delete_entry():
         Later I'll replace with a database algorith"""
 
         index = int(flask.request.form["Delete"])
-        print(index)
+        # The following algorithm in the database functions file
+        deleteEntry(index)
     return flask.redirect(flask.url_for("users_entries"))
 
 
@@ -187,8 +182,8 @@ def delete_entry():
 def add():
     # new entry object information
     poster = current_user.id
-    title = flask.request.form("title")
-    contents = flask.request.form("entry")
+    title = flask.request.form["title"]
+    contents = flask.request.form["entry"]
 
     newEntry = Entry(
         user=poster, title=title, content=contents, timestamp=datetime.now()
