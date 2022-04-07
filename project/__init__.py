@@ -4,6 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from dotenv import find_dotenv, load_dotenv
+
 load_dotenv(find_dotenv())
 
 # Create app, configure db
@@ -18,21 +19,22 @@ def create_app():
             "SQLALCHEMY_DATABASE_URI"
         ].replace("postgres://", "postgresql://")
 
-
-     # blueprint for auth routes in our app
+    # blueprint for auth routes in our app
     from .auth import auth as auth_blueprint
+
     app.register_blueprint(auth_blueprint)
 
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
+
     app.register_blueprint(main_blueprint)
 
     login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
+    login_manager.login_view = "auth.login"
     login_manager.init_app(app)
 
     from .models import db, Joes
-    
+
     db.init_app(app)
     with app.app_context():
         db.create_all()
