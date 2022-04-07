@@ -19,7 +19,6 @@ from fun_fact import fun_fact
 from nyt import nyt_results
 
 
-
 load_dotenv(find_dotenv())
 
 # Create app, configure db
