@@ -43,7 +43,7 @@ load_dotenv(find_dotenv())
         # since the user_id is just the primary key of our user table, use it in the query for the user
         return Joes.query.get(int(user_id))
 
-if __name__ == "__main__":
-    app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
-    )
+    if __name__ == "__main__":
+        app.run(
+            host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
+        )
