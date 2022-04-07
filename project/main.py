@@ -20,7 +20,7 @@ from .twitter import get_trends
 
 load_dotenv(find_dotenv())
 
-main = Blueprint('main', __name__)
+main = Blueprint("main", __name__)
 
 # route to user's home page
 @main.route("/home")
@@ -37,6 +37,7 @@ def home():
         nyt=nyt_results(),
         twitter_trends=get_trends(),
     )
+
 
 # route to mainly user settings
 # this is still in progress. how to store preferences, etc
@@ -61,7 +62,7 @@ def users_entries():
     print(prev_entries[0].timestamp)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
-        return redirect(flask.url_for('main.home'))
+        return redirect(flask.url_for("main.home"))
     else:
         return render_template(
             "entries.html", user_entries=prev_entries, length=len(prev_entries)
@@ -79,7 +80,7 @@ def delete_entry():
         index = int(flask.request.form["Delete"])
         # The following algorithm in the database functions file
         deleteEntry(index)
-    return flask.redirect(flask.url_for('main.users_entries'))
+    return flask.redirect(flask.url_for("main.users_entries"))
 
 
 @main.route("/add_entry", methods=["GET", "POST"])
@@ -94,4 +95,4 @@ def add():
     )
     db.session.add(newEntry)
     db.session.commit()
-    return flask.redirect(flask.url_for('main.users_entries'))
+    return flask.redirect(flask.url_for("main.users_entries"))

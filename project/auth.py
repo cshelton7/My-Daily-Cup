@@ -12,12 +12,14 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from .openweather import get_weather
-#from database_functions import get_entries, deleteEntry
+
+# from database_functions import get_entries, deleteEntry
 from .models import db, Joes, Entry
 
 load_dotenv(find_dotenv())
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint("auth", __name__)
+
 
 @auth.route("/", methods=["GET", "POST"])
 def login():
@@ -34,16 +36,18 @@ def login():
             userInfo = Joes.query.filter_by(email=email).first()
             if check_password_hash(userInfo.password, password):
                 login_user(userInfo)
-                return flask.redirect(flask.url_for('main.home'))
+                return flask.redirect(flask.url_for("main.home"))
                 # if the user isn't logged in, the password is incorrect
                 flask.flash("Password is not correct. Please try again.")
         # if the user does not exist, redirect to signup
         except:
             flask.flash("No user with that email found. Register below!")
-            return flask.redirect(flask.url_for('auth.signup'))
+            return flask.redirect(flask.url_for("auth.signup"))
     return render_template(
         "login.html",
     )
+
+
 # route to allow a user to register
 # add auth back later
 @auth.route("/signup", methods=["GET", "POST"])
@@ -67,14 +71,15 @@ def signup():
             db.session.add(registerUser)
             db.session.commit()
             flask.flash("You have successfully registered.")
-            return flask.redirect(flask.url_for('auth.login'))
+            return flask.redirect(flask.url_for("auth.login"))
         # if it throws an error, some input has conflicted with the rules
         except:
             flask.flash(
                 "Something went wrong. Either that username is taken or you have left an entry blank. Please try again."
             )
-            return flask.redirect(flask.url_for('auth.signup'))
+            return flask.redirect(flask.url_for("auth.signup"))
     return render_template("signup.html")
+
 
 # route to allow user to sign out
 @auth.route("/signout")
@@ -82,4 +87,4 @@ def signup():
 def signout():
     logout_user()
     flask.flash("You  have successfully logged out.")
-    return flask.redirect(flask.url_for('auth.login'))
+    return flask.redirect(flask.url_for("auth.login"))
