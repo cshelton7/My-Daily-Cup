@@ -13,6 +13,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from models import db, User, Entry
 from openweather import get_weather
+from database_functions import get_entries, deleteEntry
+from models import db, Joes, Entry
+from fun_fact import fun_fact
+from nyt import nyt_results
+
 
 load_dotenv(find_dotenv())
 
@@ -125,6 +130,8 @@ def home():
         "home.html",
         user=current_user.username,
         weather_info=get_weather(),
+        fun_fact=fun_fact(),
+        nyt=nyt_results(),
     )
 
 

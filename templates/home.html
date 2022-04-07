@@ -16,10 +16,22 @@
     <h1>Hello, {{user}}</h1>
 
     <div id="weather_info">
-        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p>
-        <p> {{ weather_info['weather'] }}</p>
-        <p>{{ weather_info['fahrenheit'] }}</p>
+        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p><p> {{ weather_info['weather'] }}</p> <p>{{ weather_info['fahrenheit'] }}</p>
     </div>
+
+    <div id="fun_fact">
+        {{fun_fact}}
+
+    </div>
+
+    <div id="nyt_result">
+    <!----TODO---->
+    <!----Fix formating on NYT API Lists Print With "(" AND NEED TO HREF LINKS ---->
+         {% for row in nyt %}
+         <p>{{ row }}</p>
+     {% endfor %}
+    </div>
+   
 
     <div id="maincontent">
         <form action="/addentry" method="POST">
