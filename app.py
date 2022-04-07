@@ -15,6 +15,10 @@ from openweather import get_weather
 from database_functions import get_entries, deleteEntry
 from models import db, Joes, Entry
 
+from fun_fact import fun_fact
+from nyt import nyt_results
+
+
 load_dotenv(find_dotenv())
 
 # Create app, configure db
@@ -124,6 +128,8 @@ def home():
         "home.html",
         user=current_user.username,
         weather_info=get_weather(),
+        fun_fact=fun_fact(),
+        nyt=nyt_results(),
     )
 
 
