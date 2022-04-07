@@ -26,3 +26,9 @@ To generate your key, run:
 
 python3 -c 'import secrets; print(secrets.token_hex())'
 
+#   Twitter API
+    https://developer.twitter.com/en/docs
+    To use this API with your own app, you would first have to set up a twitter developer account.
+    There you will be given your own api_key and secret_key.
+    You will also need to upgrade your account to "Elevated" which will give you access to the "trends" that we use in our app.
+    Store the keys somewhere safe where you can retrieve them for your requests to to the twitter API.
