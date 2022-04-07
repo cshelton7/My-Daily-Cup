@@ -32,6 +32,14 @@
      {% endfor %}
     </div>
    
+    <div class="twitter">
+        <h3>Trending</h3>
+        <!----TODO---->
+        <!----Fix formating on Twitter API trends Print With "(" AND NEED TO HREF LINKS ---->
+        {% for tweet in twitter_trends %}
+            <p>{{ tweet }}</p>
+        {% endfor %}
+    </div>
 
     <div id="maincontent">
         <form action="/add_entry" method="POST">
@@ -41,6 +49,7 @@
         </form>
         <!-- next add task form -->
     </div>
+
 </body>
 
 </html>
