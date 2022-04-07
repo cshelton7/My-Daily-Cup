@@ -1,1 +1,1 @@
-web: python project/__init__.py
+web: python __init__.py
