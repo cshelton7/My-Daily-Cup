@@ -1,6 +1,6 @@
 import os
 import flask
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from dotenv import find_dotenv, load_dotenv
