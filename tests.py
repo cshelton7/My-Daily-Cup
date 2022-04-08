@@ -62,11 +62,11 @@ class WeatherTest(unittest.TestCase):
 
 # Checking for Twitter API response
 class TwitterTests(unittest.TestCase):
-    '''We'll test our twitter api'''
+    """We'll test our twitter api"""
 
     def test_twitter_api(self):
-        ''' This is where we test the api and see if the response are the values
-            we expect'''
+        """This is where we test the api and see if the response are the values
+        we expect"""
         mock_reponse_api = MagicMock()
         mock_reponse_api.return_value = [
             {
