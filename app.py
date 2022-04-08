@@ -219,6 +219,20 @@ def delete_entry():
     if request.method == "POST":
         """Here we will call a method that removes the
         entry we deleted from the     # new entry object information
+        entry we deleted from the database. For the time
+        being I'll just print the value(index of entry deleted).
+        Later I'll replace with a database algorith"""
+
+        index = int(flask.request.form["Delete"])
+        # The following algorithm in the database functions file
+        deleteEntry(index)
+    return flask.redirect(flask.url_for("users_entries"))
+
+
+@app.route("/add_entry", methods=["GET", "POST"])
+def add():
+    """Function to add entry to user journals"""
+    # new entry object information
     poster = current_user.id
     title = flask.request.form["title"]
     contents = flask.request.form["entry"]
