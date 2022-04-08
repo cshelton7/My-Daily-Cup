@@ -12,6 +12,7 @@ def deleteEntry(entry_id):
         db.session.delete(entry)
         db.session.commit()
 
+
 def deleteTaskList(task_list_id):
     taskList = Task.query.filter_by(id=task_list_id).first()
     if taskList:
