@@ -120,23 +120,36 @@ def home():
     """
     Home page of application
     """
+    if flask.request.method == "POST": 
+        title = request.form.get("task_list_title")
+        
+        task_list_title = Task(
+            title = title,
+        )
+
+        db.session.add(task_list_title)
+        db.session.commit()
+
+    task_lists = Task.query.all()
+    all_task_lists = len(task_lists)
+
     return render_template(
         "home.html",
         user=current_user.username,
         weather_info=get_weather(),
+        task_lists = task_lists, 
+        all_task_lists = all_task_lists
     )
 
 def add_task_list(): 
-    title = flask.request.form("task_title")
+    
 
-    newTaskList = Task(
-       title=title, timestamp=datetime.now()
-    )
-    db.session.add(newTaskList)
-    db.session.commit()
+        return flask.redirect(flask.url_for("home"))
 
-    return flask.redirect(flask.url_for("home") )
 
+
+
+'''
 def delete_task_list():
     if request.method == "POST":
       
@@ -160,30 +173,7 @@ def add_task_to_list():
     db.session.commit()
     return flask.redirect(flask.url_for("home"))
 
-def display_task_list(): 
-    """The following data is fake entries that'll be deleted later
-    when our database is good to go.
-    entries = [
-        {"title": "Great day", "post": "Today was a fantastic from sunrise to sunset"},
-        {"title": "Horrible day", "post": "Today was the worst day of my life, smh"},
-        {
-            "title": "Spontaneous",
-            "post": "Today, me and wife went on an amazing adventure in the wilderness.",
-        },
-    ]
-    Here we will call a method that queries for the
-        entries made by our user from the database. For the time
-        being I'll just use the value from the entries
-        list that I made above
-    """
-    user_task_lists = Task.query.filter_by(current_user.id)
-    if user_task_lists is None:
-        flask.flash("Sorry, you have no task lists at the moment, please add one.")
-        return redirect(flask.url_for("home"))
-    else:
-        return render_template(
-            "home.html", user_task_lists=user_task_lists, length=len(user_task_lists)
-        )
+'''
 
 # route to apply user settings
 # this is still in progress. how to store preferences, etc

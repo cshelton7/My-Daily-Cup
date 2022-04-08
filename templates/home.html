@@ -30,12 +30,20 @@
     </div>
         <!-- next add task form -->
 
-    <div id ="task_form"> 
+    <div id ="add_task_list"> 
         <form action= "/home" method="POST">
-            <label for="task_form">Create New Task List</label><br>
-            <input type = "text" placeholder = "Title" name = "task_title">
-            <input type="submit" value ="Add" name = "add_task_list">
+            <label for="task_form">Create New Task List!</label><br>
+            <input type = "text" placeholder = "Create New Task List" name = "task_list_title">
+            <input type="submit" value ="Add">
         </form>
+    
+    </div>
+    <h3>Here are your current task lists!</h3> 
+
+    <div class="task_list_display">
+        {% for task_lists in range(all_task_lists) %}
+            <p>{{task_lists}}</p>
+        {% endfor %}
     </div>
 
     <div id = "edit_task_lists">
