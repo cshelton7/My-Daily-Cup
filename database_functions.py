@@ -17,3 +17,4 @@ def deleteTaskList(task_list_id):
     if taskList:
         db.session.delete(taskList)
         db.session.commit
+
