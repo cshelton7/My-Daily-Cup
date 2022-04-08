@@ -139,10 +139,6 @@ def home():
     task_lists = Task.query.all()
     all_task_lists = len(task_lists)
 
-
-
-        
-
     return render_template(
         "home.html",
         user=current_user.username,
@@ -150,11 +146,9 @@ def home():
         task_lists=task_lists,
         all_task_lists=all_task_lists,
         fun_fact=fun_fact(),
-      
         twitter_trends=get_trends(),
     )
 
- 
 
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")
