@@ -18,8 +18,10 @@ from models import db, Joes, Entry
 from fun_fact import fun_fact
 from nyt import nyt_results
 from twitter import get_trends
+
 from sentiment import get_emotion
 from nasa import nasa_picture
+
 
 load_dotenv(find_dotenv())
 
