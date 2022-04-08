@@ -164,14 +164,14 @@ def users_entries():
 
     # adding tone aspect for each entry
     tones = []
-    for entry in prev_entries:
-        tones.append(get_emotion(entry))
 
     print(prev_entries[0].timestamp)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
         return redirect(flask.url_for("home"))
     else:
+        for entry in prev_entries:
+            tones.append(get_emotion(entry))
         return render_template(
             "entries.html",
             user_entries=prev_entries,
