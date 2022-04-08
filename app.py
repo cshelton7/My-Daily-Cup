@@ -12,7 +12,7 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import get_entries, deleteEntry, deleteTaskList
+from database_functions import get_entries, deleteEntry, deleteTaskList, getTaskLists
 from models import db, Joes, Entry, Task
 
 from fun_fact import fun_fact
@@ -137,26 +137,27 @@ def home():
 @app.route("/display_task_lists", methods=["GET", "POST"])
 def display_task_list():
 
-    task_lists = Task.query.all()
-    all_task_lists = len(task_lists)
-
-    if task_lists is None:
-        return redirect(flask.url_for("home"))
-    else:
-        return render_template(
-            "home.html", task_lists=task_lists, all_task_lists=all_task_lists
-        )
+    task_lists = getTaskLists
+    
+    return render_template(
+        "home.html", 
+        task_lists=task_lists, 
+        all_task_lists=len(task_lists)
+    )
 
 
 @app.route("/add_task_list", methods=["GET", "POST"])
 def add_task_list():
 
     if flask.request.method == "POST":
+        user = current_user.id
         title = request.form.get("task_list_title")
         content = request.form.get("task_entry")
         print(title)
         print(content)
-        task_list_information = Task(title=title, content=content)
+        task_list_information = Task(title=title, 
+        content=content,
+        user = user)
 
         db.session.add(task_list_information)
         db.session.commit()

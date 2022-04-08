@@ -44,6 +44,7 @@ class Task(db.Model):
     """
 
     id = db.Column(db.Integer, primary_key=True, default=None)
+    user = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(50), nullable=True)
     content = db.Column(db.String(1500), nullable=True)
 
