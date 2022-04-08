@@ -120,17 +120,12 @@ def home():
     """
     Home page of application
     """
-    if flask.request.method == "POST": 
-        title = request.form.get('task_list_title')
-        content = request.form.get('task_entry')
-        index = request.form.get('delete_task_list')
+    if flask.request.method == "POST":
+        title = request.form.get("task_list_title")
+        content = request.form.get("task_entry")
         print(title)
         print(content)
-        task_list_information = Task(
-            title = title, 
-            content=content,
-            id = index
-        )
+        task_list_information = Task(title=title, content=content)
 
         db.session.add(task_list_information)
         db.session.commit()
@@ -141,16 +136,26 @@ def home():
 
     task_lists = Task.query.all()
     all_task_lists = len(task_lists)
-  
+
     return render_template(
         "home.html",
         user=current_user.username,
         weather_info=get_weather(),
-        task_lists = task_lists, 
-        all_task_lists = all_task_lists
+        task_lists=task_lists,
+        all_task_lists=all_task_lists,
     )
 
 
+def delete_task_list():
+    if request.method == "POST":
+
+        index = flask.request.form["delete_task_list"]
+        # Later, I'll store the following algorithm in another file
+        task_list = Task.query.filter_by(id=index)
+        if task_list:
+            db.session.delete(task_list)
+            db.session.commit()
+    return flask.redirect(flask.url_for("home"))
 
 
 # this is still in progress. how to store preferences, etc
