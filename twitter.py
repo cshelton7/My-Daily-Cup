@@ -1,9 +1,11 @@
 # import the module
 import os
 import tweepy
+
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
+
 
 
 def get_trends():
