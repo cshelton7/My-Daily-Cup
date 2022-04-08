@@ -176,6 +176,7 @@ def delete_task_list():
         deleteTaskList(index)
     return flask.redirect(flask.url_for("home"))
 
+
 # route to apply user settings
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")

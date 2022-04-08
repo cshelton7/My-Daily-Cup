@@ -1,4 +1,5 @@
 from models import db, Joes, Entry, Task
+
 """Functions to display and delete entries from user journals"""
 from models import db, Joes, Entry
 
