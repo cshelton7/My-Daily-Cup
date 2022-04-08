@@ -121,18 +121,21 @@ def home():
     Home page of application
     """
     if flask.request.method == "POST": 
-        title = request.form.get("task_list_title")
-        
-        task_list_title = Task(
-            title = title,
+        title = request.form.get('task_list_title')
+        content = request.form.get('task_entry')
+        print(title)
+        print(content)
+        task_list_information = Task(
+            title = title, 
+            content=content
         )
 
-        db.session.add(task_list_title)
+        db.session.add(task_list_information)
         db.session.commit()
 
     task_lists = Task.query.all()
     all_task_lists = len(task_lists)
-
+  
     return render_template(
         "home.html",
         user=current_user.username,
@@ -141,20 +144,13 @@ def home():
         all_task_lists = all_task_lists
     )
 
-def add_task_list(): 
-    
-
-        return flask.redirect(flask.url_for("home"))
 
 
 
-
-'''
 def delete_task_list():
     if request.method == "POST":
       
-
-        index = int(flask.request.form["Delete"])
+        index = flask.request.form["delete_task_list"]
         # Later, I'll store the following algorithm in another file
         task_list = Task.query.filter_by(id=index)
         if task_list:
@@ -162,20 +158,8 @@ def delete_task_list():
             db.session.commit()
     return flask.redirect(flask.url_for("home"))
 
-def add_task_to_list(): 
-        # new entry object information
-    contents = flask.request.form("task_entry")
 
-    newTask = Task(
-       content=contents, timestamp=datetime.now()
-    )
-    db.session.add(newTask)
-    db.session.commit()
-    return flask.redirect(flask.url_for("home"))
 
-'''
-
-# route to apply user settings
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")
 @login_required

@@ -34,6 +34,3 @@ def get_weather():
         "country": country,
     }
     return weather_info
-
-
-

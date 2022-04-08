@@ -32,8 +32,7 @@
 
     <div id ="add_task_list"> 
         <form action= "/home" method="POST">
-            <label for="task_form">Create New Task List!</label><br>
-            <input type = "text" placeholder = "Create New Task List" name = "task_list_title">
+            <input type = "text" placeholder = "Create A New Task List!" name = "task_list_title">
             <input type="submit" value ="Add">
         </form>
     
@@ -41,17 +40,18 @@
     <h3>Here are your current task lists!</h3> 
 
     <div class="task_list_display">
-        {% for task_lists in range(all_task_lists) %}
-            <p>{{task_lists}}</p>
+        {% for i in range(all_task_lists) %}
+            <p>Task List: <b>{{task_lists[i].title}}</b>
+                <form>
+                    <input type = "submit" value = "Delete Task List" name = "delete_task_list">
+                </form>
+            </p>
+            <form action="/home" method = "POST">
+                <input type = "text" placeholder="Input New Task!" name = "task_entry">
+                <input type = "submit" value = "+">
+            </form>
+            <p>Tasks: <b> {{task_lists[i].content}}</b></p>
         {% endfor %}
-    </div>
-
-    <div id = "edit_task_lists">
-        <form action = "/home" method = "POST">
-            <input type = "submit" value = "x" name = "delete_task_list">
-            <input type = "submit" value = "+" name = "add_task">
-            <input type = "text" placeholder="Input New Task" name = "task_entry">
-        </form>
     </div>
    
     
