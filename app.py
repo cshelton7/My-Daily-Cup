@@ -125,8 +125,31 @@ def home():
     Home page of application
     """
 
-    
+    return render_template(
+        "home.html",
+        user=current_user.username,
+        weather_info=get_weather(),
+        fun_fact=fun_fact(),
+        twitter_trends=get_trends(),
+    )
 
+@app.route("/display_task_lists", methods=["GET", "POST"])
+def display_task_list():
+   
+    task_lists = Task.query.all()
+    all_task_lists = len(task_lists)
+
+    if task_lists is None: 
+        return redirect(flask.url_for("home"))
+    else:
+        return render_template(
+            "home.html", task_lists = task_lists, 
+            all_task_lists = all_task_lists
+        )
+
+@app.route("/add_task_list", methods=["GET", "POST"])
+def add_task_list():
+    
     if flask.request.method == "POST":
         title = request.form.get("task_list_title")
         content = request.form.get("task_entry")
@@ -137,29 +160,14 @@ def home():
         db.session.add(task_list_information)
         db.session.commit()
 
+    return flask.redirect(flask.url_for("home"))
+
+@app.route("/delete_task_list", methods=["GET", "POST"])
+def delete_task_list():
     if flask.request.method == "POST":
         index = request.form.get("delete_task_list")
         deleteTaskList(index)
-
-    task_lists = Task.query.all()
-    all_task_lists = len(task_lists)
-
-    if task_lists is None: 
-        return redirect(flask.url_for(home))
-    else:
-        
-
-        return render_template(
-        "home.html",
-        user=current_user.username,
-        weather_info=get_weather(),
-        fun_fact=fun_fact(),
-        twitter_trends=get_trends(),
-        task_lists = task_lists,
-        all_task_lists = all_task_lists
-    )
-
-
+    return flask.redirect(flask.url_for("home"))
 
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")
