@@ -12,12 +12,18 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import get_entries, deleteEntry, deleteTaskList, getTaskLists
+from database_functions import get_entries, deleteEntry, getTaskLists, deleteTaskList
 from models import db, Joes, Entry, Task
 
 from fun_fact import fun_fact
 from nyt import nyt_results
+
 from twitter import get_trends
+from nasa import nasa_picture
+
+from sentiment import get_emotion
+from nasa import nasa_picture
+
 
 load_dotenv(find_dotenv())
 
@@ -43,6 +49,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    """Loads user ID of user"""
     return Joes.query.get(int(user_id))
 
 
@@ -113,24 +120,25 @@ def signup():
 @login_required
 def signout():
     logout_user()
-    flask.flash("You  have successfully logged out.")
+    flask.flash("You have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
 
 
 # route to user's home page
-@app.route("/home", methods=["GET", "POST"])
+@app.route("/home")
 @login_required
 def home():
     """
     Home page of application
     """
-
     return render_template(
         "home.html",
         user=current_user.username,
         weather_info=get_weather(),
         fun_fact=fun_fact(),
+        nyt=nyt_results(),
         twitter_trends=get_trends(),
+        nasa=nasa_picture(),
     )
 
 
@@ -168,7 +176,7 @@ def delete_task_list():
         deleteTaskList(index)
     return flask.redirect(flask.url_for("home"))
 
-
+# route to apply user settings
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")
 @login_required
@@ -188,13 +196,21 @@ def users_entries():
     to display all of their previous entries."""
     # The following algorithm in the database functions file
     prev_entries = get_entries(current_user.id)
+    # adding tone aspect for each entry
+    tones = []
     print(prev_entries[0].timestamp)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
         return redirect(flask.url_for("home"))
     else:
+        for entry in prev_entries:
+            tones.append(get_emotion(entry))
         return render_template(
-            "entries.html", user_entries=prev_entries, length=len(prev_entries)
+            "entries.html",
+            user_entries=prev_entries,
+            length=len(prev_entries),
+            tones=tones,
+            num_tones=len(tones),
         )
 
 
@@ -202,19 +218,7 @@ def users_entries():
 def delete_entry():
     if request.method == "POST":
         """Here we will call a method that removes the
-        entry we deleted from the database. For the time
-        being I'll just print the value(index of entry deleted).
-        Later I'll replace with a database algorith"""
-
-        index = int(flask.request.form["Delete"])
-        # The following algorithm in the database functions file
-        deleteEntry(index)
-    return flask.redirect(flask.url_for("users_entries"))
-
-
-@app.route("/add_entry", methods=["GET", "POST"])
-def add():
-    # new entry object information
+        entry we deleted from the     # new entry object information
     poster = current_user.id
     title = flask.request.form["title"]
     contents = flask.request.form["entry"]
