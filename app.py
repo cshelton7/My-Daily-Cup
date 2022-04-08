@@ -137,12 +137,8 @@ def home():
         weather_info=get_weather(),
         fun_fact=fun_fact(),
         nyt=nyt_results(),
-
         twitter_trends=get_trends(),
         nasa=nasa_picture()
-
-        twitter_trends=get_trends(),
-
     )
 
 
