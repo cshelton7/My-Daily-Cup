@@ -4,13 +4,15 @@ Openweather API to display current weather information
 import os
 import requests
 from dotenv import find_dotenv, load_dotenv
+import geocoder
 
 
 load_dotenv(find_dotenv())
 
 # Hardcoded the lat/lon until I can figure out best way to implement geolocation feature
-LAT = 33.748997
-LON = -84.387985
+g = geocoder.ip('me')
+LAT = g.lat
+LON = g.lng
 OPENWEATHER_URL = (
     f"https://api.openweathermap.org/data/2.5/weather?lat={LAT}&lon={LON}&appid="
 )
@@ -35,5 +37,3 @@ def get_weather():
     }
     return weather_info
 
-
-get_weather()
