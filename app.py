@@ -17,7 +17,9 @@ from models import db, Joes, Entry
 
 from fun_fact import fun_fact
 from nyt import nyt_results
+
 from twitter import get_trends
+from nasa import nasa_picture
 
 from sentiment import get_emotion
 from nasa import nasa_picture
@@ -47,6 +49,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    """Loads user ID of user"""
     return Joes.query.get(int(user_id))
 
 
@@ -159,13 +162,13 @@ def users_entries():
     to display all of their previous entries."""
     # The following algorithm in the database functions file
     prev_entries = get_entries(current_user.id)
-    print(prev_entries[0].timestamp)
+    # adding tone aspect for each entry
     tones = []
+    print(prev_entries[0].timestamp)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
         return redirect(flask.url_for("home"))
     else:
-        # adding tone aspect for each entry
         for entry in prev_entries:
             tones.append(get_emotion(entry))
         return render_template(
@@ -193,6 +196,7 @@ def delete_entry():
 
 @app.route("/add_entry", methods=["GET", "POST"])
 def add():
+    """Function to add entry to user journals"""
     # new entry object information
     poster = current_user.id
     title = flask.request.form["title"]
