@@ -17,9 +17,13 @@ from models import db, Joes, Entry
 
 from fun_fact import fun_fact
 from nyt import nyt_results
+
 from twitter import get_trends
+from nasa import nasa_picture
 
 from sentiment import get_emotion
+
+
 
 
 load_dotenv(find_dotenv())
@@ -133,7 +137,12 @@ def home():
         weather_info=get_weather(),
         fun_fact=fun_fact(),
         nyt=nyt_results(),
+
         twitter_trends=get_trends(),
+        nasa=nasa_picture()
+
+        twitter_trends=get_trends(),
+
     )
 
 
