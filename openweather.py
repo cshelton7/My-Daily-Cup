@@ -10,7 +10,7 @@ import geocoder
 load_dotenv(find_dotenv())
 
 # Hardcoded the lat/lon until I can figure out best way to implement geolocation feature
-g = geocoder.ip('me')
+g = geocoder.ip("me")
 LAT = g.lat
 LON = g.lng
 OPENWEATHER_URL = (
@@ -36,4 +36,3 @@ def get_weather():
         "country": country,
     }
     return weather_info
-
