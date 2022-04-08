@@ -166,7 +166,11 @@ def users_entries():
         return redirect(flask.url_for("home"))
     else:
         return render_template(
-            "entries.html", user_entries=prev_entries, length=len(prev_entries), tones=tones, num_tones=len(tones)
+            "entries.html",
+            user_entries=prev_entries,
+            length=len(prev_entries),
+            tones=tones,
+            num_tones=len(tones),
         )
 
 
