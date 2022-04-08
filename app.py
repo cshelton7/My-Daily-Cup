@@ -124,6 +124,7 @@ def home():
     """
     Home page of application
     """
+    #task list title and tasks are taken from their respective forms and added to the databse
     if flask.request.method == "POST":
         title = request.form.get("task_list_title")
         content = request.form.get("task_entry")
@@ -134,8 +135,11 @@ def home():
         db.session.add(task_list_information)
         db.session.commit()
 
+        #delete button calls deleteTaskList function which is located in database_functions.py
         index = int(flask.request.form["delete_task_list"])
         deleteTaskList(index)
+    
+    #task lists and its contents display on homepage
     task_lists = Task.query.all()
     all_task_lists = len(task_lists)
 
