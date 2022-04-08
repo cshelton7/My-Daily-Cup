@@ -62,6 +62,16 @@
                                  <h3>{{user_entries[i].title}}</h3>
                                  <h5><span class="glyphicon glyphicon-time"></span> Posted on Jun 27, 1987.</h5>           
                                  <p>{{user_entries[i].content}}</p>
+                               
+                                 <p>You sound:<br>
+                                  {% for j in range(0,tones[i]|length) : %}
+                                  {% if j == tones[i]|length - 1 %}
+                                  {{tones[i][j]}}
+                                  {% else %}
+                                  {{tones[i][j]}},
+                                  {% endif %}
+                                  {% endfor %}
+                                 </p>
                              </div>
                          </div>
                      {% if (i%2)==1  %}
@@ -81,9 +91,5 @@
                   </div>
             </div>
         </div>
-
-
-
-
     </body>
 </html>
