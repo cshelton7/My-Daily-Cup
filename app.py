@@ -1,9 +1,23 @@
 import os
 import flask
-from flask import Flask, Blueprint
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask import Flask, render_template, redirect, flash, request, Blueprint
+from datetime import datetime
+from flask_login import (
+    LoginManager,
+    login_required,
+    login_user,
+    logout_user,
+    current_user,
+)
+from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
+from openweather import get_weather
+from database_functions import get_entries, deleteEntry
+from models import db, Joes, Entry
+
+from fun_fact import fun_fact
+from nyt import nyt_results
+from twitter import get_trends
 
 load_dotenv(find_dotenv())
 
@@ -18,31 +32,165 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://")
 
-# blueprint for auth routes in our app
-from .auth import auth as auth_blueprint
-
-app.register_blueprint(auth_blueprint)
-
-# blueprint for non-auth parts of app
-from .main import main as main_blueprint
-
-app.register_blueprint(main_blueprint)
-
-login_manager = LoginManager()
-login_manager.login_view = "auth.login"
-login_manager.init_app(app)
-
-from .models import db, Joes
-
 db.init_app(app)
 with app.app_context():
     db.create_all()
 
+# initializing login feature
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
-    # since the user_id is just the primary key of our user table, use it in the query for the user
     return Joes.query.get(int(user_id))
+
+
+# route to log a user in
+# add auth back later
+@app.route("/", methods=["GET", "POST"])
+def login():
+    """
+    Login page of application
+    """
+    # when the user submits credentials
+    if flask.request.method == "POST":
+        # check form information
+        email = request.form.get("email")
+        password = request.form.get("pass")
+        # if the user exists, log in & redirect to home page
+        try:
+            userInfo = Joes.query.filter_by(email=email).first()
+            if check_password_hash(userInfo.password, password):
+                login_user(userInfo)
+                return flask.redirect(flask.url_for("home"))
+                # if the user isn't logged in, the password is incorrect
+                flask.flash("Password is not correct. Please try again.")
+        # if the user does not exist, redirect to signup
+        except:
+            flask.flash("No user with that email found. Register below!")
+            return flask.redirect(flask.url_for("signup"))
+    return render_template(
+        "login.html",
+    )
+
+
+# route to allow a user to register
+# add auth back later
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    """
+    Signup page of application
+    """
+    # when the user submits credentials
+    if flask.request.method == "POST":
+        email = request.form.get("email")
+        username = request.form.get("username")
+        password = request.form.get("pass")
+        # hash the password to store in the db
+        try:
+            # includes password hashing with the 256 bit-long encrypting method
+            registerUser = Joes(
+                email=email,
+                username=username,
+                password=generate_password_hash(password, method="sha256"),
+            )
+            db.session.add(registerUser)
+            db.session.commit()
+            flask.flash("You have successfully registered.")
+            return flask.redirect(flask.url_for("login"))
+        # if it throws an error, some input has conflicted with the rules
+        except:
+            flask.flash(
+                "Something went wrong. Either that username is taken or you have left an entry blank. Please try again."
+            )
+            return flask.redirect(flask.url_for("signup"))
+    return render_template("signup.html")
+
+
+# route to allow user to sign out
+@app.route("/signout")
+@login_required
+def signout():
+    logout_user()
+    flask.flash("You  have successfully logged out.")
+    return flask.redirect(flask.url_for("login"))
+
+
+# route to user's home page
+@app.route("/home")
+@login_required
+def home():
+    """
+    Home page of application
+    """
+    return render_template(
+        "home.html",
+        user=current_user.username,
+        weather_info=get_weather(),
+        fun_fact=fun_fact(),
+        nyt=nyt_results(),
+        twitter_trends=get_trends(),
+    )
+
+
+# route to apply user settings
+# this is still in progress. how to store preferences, etc
+@app.route("/settings")
+@login_required
+def settings():
+    """
+    Home page of application
+    """
+    return render_template(
+        "settings.html",
+    )
+
+
+@app.route("/view_entries", methods=["GET", "POST"])
+@login_required
+def users_entries():
+    """When the user enters there entries page, we'll then use this function
+    to display all of their previous entries."""
+    # The following algorithm in the database functions file
+    prev_entries = get_entries(current_user.id)
+    print(prev_entries[0].timestamp)
+    if prev_entries is None:
+        flask.flash("Sorry, you have no entries at the moment, please add one.")
+        return redirect(flask.url_for("home"))
+    else:
+        return render_template(
+            "entries.html", user_entries=prev_entries, length=len(prev_entries)
+        )
+
+
+@app.route("/delete_entry", methods=["GET", "POST"])
+def delete_entry():
+    if request.method == "POST":
+        """Here we will call a method that removes the
+        entry we deleted from the database. For the time
+        being I'll just print the value(index of entry deleted).
+        Later I'll replace with a database algorith"""
+
+        index = int(flask.request.form["Delete"])
+        # The following algorithm in the database functions file
+        deleteEntry(index)
+    return flask.redirect(flask.url_for("users_entries"))
+
+
+@app.route("/add_entry", methods=["GET", "POST"])
+def add():
+    # new entry object information
+    poster = current_user.id
+    title = flask.request.form["title"]
+    contents = flask.request.form["entry"]
+
+    newEntry = Entry(
+        user=poster, title=title, content=contents, timestamp=datetime.now()
+    )
+    db.session.add(newEntry)
+    db.session.commit()
+    return flask.redirect(flask.url_for("users_entries"))
 
 
 if __name__ == "__main__":
