@@ -134,16 +134,6 @@ def home():
     )
 
 
-@app.route("/display_task_lists", methods=["GET", "POST"])
-def display_task_list():
-
-    task_lists = getTaskLists
-    
-    return render_template(
-        "home.html", 
-        task_lists=task_lists, 
-        all_task_lists=len(task_lists)
-    )
 
 
 @app.route("/add_task_list", methods=["GET", "POST"])
@@ -164,6 +154,16 @@ def add_task_list():
 
     return flask.redirect(flask.url_for("home"))
 
+@app.route("/display_task_lists", methods=["GET", "POST"])
+def display_task_list():
+
+    task_lists = getTaskLists(current_user.id)
+    
+    return render_template(
+        "home.html", 
+        task_lists=task_lists, 
+        all_task_lists=len(task_lists)
+    )
 
 @app.route("/delete_task_list", methods=["GET", "POST"])
 def delete_task_list():
