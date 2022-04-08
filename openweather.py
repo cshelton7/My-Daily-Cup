@@ -10,7 +10,6 @@ from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv())
 
 # Hardcoded the lat/lon until I can figure out best way to implement geolocation feature
-
 LAT = 33.7499
 LON = 84.4000
 OPENWEATHER_URL = (
@@ -36,4 +35,3 @@ def get_weather():
         "country": country,
     }
     return weather_info
-
