@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+    <div id="nav">
+        <a href="{{ url_for('home') }}"> Home</a>
+        <a href="{{ url_for('users_entries') }}"> Entries</a>
+        <a href="{{ url_for('settings') }}"> Settings</a>
+        <a href="{{ url_for('signout') }}"> Log Out</a>
+    </div>
+    <h1>Hello, {{user}}</h1>
+
+    <div id="weather_info">
+        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p><p> {{ weather_info['weather'] }}</p> <p>{{ weather_info['fahrenheit'] }}</p>
+    </div>
+
+    <div id="fun_fact">
+        {{fun_fact}}
+
+    </div>
+
+    <div id="nyt_result">
+    <!----TODO---->
+    <!----Fix formating on NYT API Lists Print With "(" AND NEED TO HREF LINKS ---->
+         {% for row in nyt %}
+         <p>{{ row }}</p>
+     {% endfor %}
+    </div>
+   
+    <div class="twitter">
+        <h3>Trending</h3>
+        <!----TODO---->
+        <!----Fix formating on Twitter API trends Print With "(" AND NEED TO HREF LINKS ---->
+        {% for tweet in twitter_trends %}
+            <p>{{ tweet }}</p>
+        {% endfor %}
+    </div>
+
+    <div id="maincontent">
+        <form action="/add_entry" method="POST">
+            <input type="text" placeholder="Title" name="title">
+            <input type="text" placeholder="How are you feeling today?" name="entry">
+            <input type="submit" value="Post">
+        </form>
+        <!-- next add task form -->
+    </div>
+
+</body>
+
+</html>
