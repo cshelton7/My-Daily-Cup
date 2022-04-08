@@ -19,6 +19,7 @@ def deleteTaskList(task_list_id):
         db.session.delete(taskList)
         db.session.commit
 
+
 def getTaskLists(user_id):
     taskLists = Task.query.filter_By(user=user_id).all()
     return taskLists
