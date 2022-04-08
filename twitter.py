@@ -7,7 +7,6 @@ from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv())
 
 
-
 def get_trends():
     # assign the values accordingly
     consumer_key = os.getenv("TWITTER_KEY")
