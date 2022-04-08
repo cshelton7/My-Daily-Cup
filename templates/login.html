@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Log In</title>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <b>{{ message }}</b>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <br><br>
+
+    <h1> Login to your daily cup: </h1>
+    <form action="/" method="POST">
+        <input type="text" placeholder="Email" name="email">
+        <input type="password" placeholder="Password" name="pass">
+        <input type="submit" value="Log In">
+    </form>
+</body>
+
+</html>
