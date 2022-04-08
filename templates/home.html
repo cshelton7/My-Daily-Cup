@@ -16,13 +16,33 @@
     <h1>Hello, {{user}}</h1>
 
     <div id="weather_info">
-        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p>
-        <p> {{ weather_info['weather'] }}</p>
-        <p>{{ weather_info['fahrenheit'] }}</p>
+        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p><p> {{ weather_info['weather'] }}</p> <p>{{ weather_info['fahrenheit'] }}</p>
+    </div>
+
+    <div id="fun_fact">
+        {{fun_fact}}
+
+    </div>
+
+    <div id="nyt_result">
+    <!----TODO---->
+    <!----Fix formating on NYT API Lists Print With "(" AND NEED TO HREF LINKS ---->
+         {% for row in nyt %}
+         <p>{{ row }}</p>
+     {% endfor %}
+    </div>
+   
+    <div class="twitter">
+        <h3>Trending</h3>
+        <!----TODO---->
+        <!----Fix formating on Twitter API trends Print With "(" AND NEED TO HREF LINKS ---->
+        {% for tweet in twitter_trends %}
+            <p>{{ tweet }}</p>
+        {% endfor %}
     </div>
 
     <div id="maincontent">
-        <form action="/addentry" method="POST">
+        <form action="/add_entry" method="POST">
             <input type="text" placeholder="Title" name="title">
             <input type="text" placeholder="How are you feeling today?" name="entry">
             <input type="submit" value="Post">
@@ -53,8 +73,6 @@
             <p>Tasks: <b> {{task_lists[i].content}}</b></p>
         {% endfor %}
     </div>
-   
-    
 </body>
 
 </html>

@@ -15,6 +15,10 @@ from openweather import get_weather
 from database_functions import get_entries, deleteEntry
 from models import db, Joes, Entry, Task
 
+from fun_fact import fun_fact
+from nyt import nyt_results
+from twitter import get_trends
+
 load_dotenv(find_dotenv())
 
 # Create app, configure db
@@ -141,8 +145,14 @@ def home():
         "home.html",
         user=current_user.username,
         weather_info=get_weather(),
+<<<<<<< HEAD
         task_lists=task_lists,
         all_task_lists=all_task_lists,
+=======
+        fun_fact=fun_fact(),
+        nyt=nyt_results(),
+        twitter_trends=get_trends(),
+>>>>>>> main
     )
 
 
@@ -173,22 +183,11 @@ def settings():
 @app.route("/view_entries", methods=["GET", "POST"])
 @login_required
 def users_entries():
-    """The following data is fake entries that'll be deleted later
-    when our database is good to go.
-    entries = [
-        {"title": "Great day", "post": "Today was a fantastic from sunrise to sunset"},
-        {"title": "Horrible day", "post": "Today was the worst day of my life, smh"},
-        {
-            "title": "Spontaneous",
-            "post": "Today, me and wife went on an amazing adventure in the wilderness.",
-        },
-    ]
-    Here we will call a method that queries for the
-        entries made by our user from the database. For the time
-        being I'll just use the value from the entries
-        list that I made above
-    """
-    prev_entries = Entry.query.filter_by(current_user.id)
+    """When the user enters there entries page, we'll then use this function
+    to display all of their previous entries."""
+    # The following algorithm in the database functions file
+    prev_entries = get_entries(current_user.id)
+    print(prev_entries[0].timestamp)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
         return redirect(flask.url_for("home"))
@@ -207,11 +206,8 @@ def delete_entry():
         Later I'll replace with a database algorith"""
 
         index = int(flask.request.form["Delete"])
-        # Later, I'll store the following algorithm in another file
-        entry = Entry.query.filter_by(id=index)
-        if entry:
-            db.session.delete(entry)
-            db.session.commit()
+        # The following algorithm in the database functions file
+        deleteEntry(index)
     return flask.redirect(flask.url_for("users_entries"))
 
 
@@ -219,8 +215,8 @@ def delete_entry():
 def add():
     # new entry object information
     poster = current_user.id
-    title = flask.request.form("title")
-    contents = flask.request.form("entry")
+    title = flask.request.form["title"]
+    contents = flask.request.form["entry"]
 
     newEntry = Entry(
         user=poster, title=title, content=contents, timestamp=datetime.now()
