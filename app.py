@@ -19,6 +19,7 @@ from fun_fact import fun_fact
 from nyt import nyt_results
 from twitter import get_trends
 from sentiment import get_emotion
+from nasa import nasa_picture
 
 load_dotenv(find_dotenv())
 
@@ -114,7 +115,7 @@ def signup():
 @login_required
 def signout():
     logout_user()
-    flask.flash("You  have successfully logged out.")
+    flask.flash("You have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
 
 
@@ -132,6 +133,7 @@ def home():
         fun_fact=fun_fact(),
         nyt=nyt_results(),
         twitter_trends=get_trends(),
+        nasa=nasa_picture(),
     )
 
 
@@ -155,16 +157,15 @@ def users_entries():
     to display all of their previous entries."""
     # The following algorithm in the database functions file
     prev_entries = get_entries(current_user.id)
-
-    # adding tone aspect for each entry
-    tones = []
-    for entry in prev_entries:
-        tones.append(get_emotion(entry))
     print(prev_entries[0].timestamp)
+    tones = []
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
         return redirect(flask.url_for("home"))
     else:
+        # adding tone aspect for each entry
+        for entry in prev_entries:
+            tones.append(get_emotion(entry))
         return render_template(
             "entries.html",
             user_entries=prev_entries,

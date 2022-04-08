@@ -28,7 +28,10 @@ def get_emotion(entry):
             tones.append(data[0])
     # case to make sure a tone is shown
     if len(tones) == 0:
-        tones.append(max["emotion"])
+        try:
+            tones.append(max["emotion"])
+        except:
+            tones.append("Bored")
 
     # correcting the 'fear' to 'fearful' for a better sound
     for i in range(len(tones)):
