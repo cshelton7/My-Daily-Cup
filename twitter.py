@@ -2,6 +2,7 @@
 import os
 import tweepy
 from dotenv import find_dotenv, load_dotenv
+
 load_dotenv(find_dotenv())
 
 
@@ -17,20 +18,19 @@ def get_trends():
 
     # getting authorization for our keys, then finding the trending topics
     trends = tweepy.API(auth).get_place_trends(id=woeid)
-    
-    trends = trends[0]['trends']
-    
-    
+
+    trends = trends[0]["trends"]
+
     # This will find the top 5 trending topics
     trending_topics = []
     i = 0
     for trend in trends:
-        trending_topics.append(trend['name'])
-        i +=1
-        if(i==5):
+        trending_topics.append(trend["name"])
+        i += 1
+        if i == 5:
             break
     return trending_topics
-    
+
 
 if __name__ == "__main__":
     get_trends()
