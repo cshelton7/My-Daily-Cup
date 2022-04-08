@@ -1,4 +1,4 @@
-# import the module
+"""Twitter API"""
 import os
 import tweepy
 from dotenv import find_dotenv, load_dotenv
@@ -7,6 +7,7 @@ load_dotenv(find_dotenv())
 
 
 def get_trends():
+    """Gets top trending tags from twitter"""
     # assign the values accordingly
     consumer_key = os.getenv("TWITTER_KEY")
     consumer_secret = os.getenv("TWITTER_SECRET")

@@ -1,3 +1,4 @@
+"""Fun Fact API retreives fun facts from host"""
 import requests
 
 
