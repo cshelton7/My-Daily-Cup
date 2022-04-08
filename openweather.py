@@ -6,7 +6,6 @@ import requests
 from dotenv import find_dotenv, load_dotenv
 
 
-
 load_dotenv(find_dotenv())
 
 # Hardcoded the lat/lon until I can figure out best way to implement geolocation feature
