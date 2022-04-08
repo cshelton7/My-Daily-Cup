@@ -1,4 +1,4 @@
-from .models import db, Joes, Entry
+from models import db, Joes, Entry
 
 
 def get_entries(user_id):
