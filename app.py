@@ -24,8 +24,6 @@ from nasa import nasa_picture
 from sentiment import get_emotion
 
 
-
-
 load_dotenv(find_dotenv())
 
 # Create app, configure db
@@ -137,9 +135,8 @@ def home():
         weather_info=get_weather(),
         fun_fact=fun_fact(),
         nyt=nyt_results(),
-
         twitter_trends=get_trends(),
-        nasa=nasa_picture()
+        nasa=nasa_picture(),
     )
 
 
