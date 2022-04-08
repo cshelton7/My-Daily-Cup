@@ -43,7 +43,7 @@
         {% for i in range(all_task_lists) %}
             <p>Task List: <b>{{task_lists[i].title}}</b>
                 <form>
-                    <input type = "submit" value = "Delete Task List" name = "delete_task_list">
+                    <button type = "submit" value = {{task_lists[i].id}} name = "delete_task_list"> Delete Task List</button>
                 </form>
             </p>
             <form action="/home" method = "POST">
