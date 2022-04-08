@@ -26,9 +26,20 @@ To generate your key, run:
 
 python3 -c 'import secrets; print(secrets.token_hex())'
 
-#   Twitter API
-    https://developer.twitter.com/en/docs
-    To use this API with your own app, you would first have to set up a twitter developer account.
-    There you will be given your own api_key and secret_key.
-    You will also need to upgrade your account to "Elevated" which will give you access to the "trends" that we use in our app.
-    Store the keys somewhere safe where you can retrieve them for your requests to to the twitter API.
+# Twitter API
+https://developer.twitter.com/en/docs
+To use this API with your own app, you would first have to set up a twitter developer account.
+There you will be given your own api_key and secret_key.
+You will also need to upgrade your account to "Elevated" which will give you access to the "trends" that we use in our app.
+Store the keys somewhere safe where you can retrieve them for your requests to to the twitter API.
+
+# Sentiment Analysis API 
+To use ParallelDots' APIs, you must obtain a key by signing up at https://dashboard.komprehend.io/signUp. Once you get your key, place it in your .env file and Heroku config variables.
+
+In your .env:
+'SENTIMENT_KEY = "<YOUR_API_KEY_HERE>"'
+
+Another thing to know before using this API is that you need to install their library for Python by running:
+
+pip install paralleldots
+

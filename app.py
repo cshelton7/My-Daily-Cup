@@ -18,6 +18,7 @@ from models import db, Joes, Entry
 from fun_fact import fun_fact
 from nyt import nyt_results
 from twitter import get_trends
+from sentiment import get_emotion
 
 load_dotenv(find_dotenv())
 
@@ -154,13 +155,18 @@ def users_entries():
     to display all of their previous entries."""
     # The following algorithm in the database functions file
     prev_entries = get_entries(current_user.id)
+
+    # adding tone aspect for each entry
+    tones = []
+    for entry in prev_entries:
+        tones.append(get_emotion(entry))
     print(prev_entries[0].timestamp)
     if prev_entries is None:
         flask.flash("Sorry, you have no entries at the moment, please add one.")
         return redirect(flask.url_for("home"))
     else:
         return render_template(
-            "entries.html", user_entries=prev_entries, length=len(prev_entries)
+            "entries.html", user_entries=prev_entries, length=len(prev_entries), tones=tones, num_tones=len(tones)
         )
 
 
