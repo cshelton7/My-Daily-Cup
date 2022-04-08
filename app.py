@@ -140,9 +140,6 @@ def home():
 
         twitter_trends=get_trends(),
         nasa=nasa_picture()
-
-        twitter_trends=get_trends(),
-
     )
 
 
