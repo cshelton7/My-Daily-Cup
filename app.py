@@ -12,7 +12,7 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import get_entries, deleteEntry
+from database_functions import get_entries, deleteEntry, deleteTaskList
 from models import db, Joes, Entry, Task
 
 from fun_fact import fun_fact
@@ -134,39 +134,27 @@ def home():
         db.session.add(task_list_information)
         db.session.commit()
 
-        if index:
-            db.session.delete(task_list_information)
-            db.session.commit()
-
+        index = int(flask.request.form["delete_task_list"])
+        deleteTaskList(index)
     task_lists = Task.query.all()
     all_task_lists = len(task_lists)
+
+
+
+        
 
     return render_template(
         "home.html",
         user=current_user.username,
         weather_info=get_weather(),
-<<<<<<< HEAD
         task_lists=task_lists,
         all_task_lists=all_task_lists,
-=======
         fun_fact=fun_fact(),
-        nyt=nyt_results(),
+      
         twitter_trends=get_trends(),
->>>>>>> main
     )
 
-
-def delete_task_list():
-    if request.method == "POST":
-
-        index = flask.request.form["delete_task_list"]
-        # Later, I'll store the following algorithm in another file
-        task_list = Task.query.filter_by(id=index)
-        if task_list:
-            db.session.delete(task_list)
-            db.session.commit()
-    return flask.redirect(flask.url_for("home"))
-
+ 
 
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")

@@ -1,4 +1,4 @@
-from models import db, Joes, Entry
+from models import db, Joes, Entry, Task
 
 
 def get_entries(user_id):
@@ -11,3 +11,9 @@ def deleteEntry(entry_id):
     if entry:
         db.session.delete(entry)
         db.session.commit()
+
+def deleteTaskList(task_list_id):
+    taskList = Task.query.filter_by(id=task_list_id).first()
+    if taskList:
+        db.session.delete(taskList)
+        db.session.commit

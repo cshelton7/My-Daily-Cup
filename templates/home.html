@@ -62,7 +62,7 @@
     <div class="task_list_display">
         {% for i in range(all_task_lists) %}
             <p>Task List: <b>{{task_lists[i].title}}</b>
-                <form>
+                <form action = "/home" method = "POST">
                     <button type = "submit" value = {{task_lists[i].id}} name = "delete_task_list"> Delete Task List</button>
                 </form>
             </p>
