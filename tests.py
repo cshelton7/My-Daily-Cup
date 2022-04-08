@@ -2,6 +2,7 @@ import unittest
 from unittest import mock
 from unittest.mock import MagicMock, patch
 from openweather import get_weather
+from twitter import get_trends
 import json
 import os
 
@@ -58,6 +59,36 @@ class WeatherTest(unittest.TestCase):
                 },
             )
 
+#Checking for Twitter API response
+class TwitterTests(unittest.TestCase):
+    '''We'll test the process of creating an object
+        and putting it into the database '''
+    def test_twitter_api(self):
+        mock_reponse_api = MagicMock()
+        mock_reponse_api.return_value = [             
+                {
+                    'trends' : 
+                    [
+                        {'name':'a'},
+                        {'name':'b'},
+                        {'name':'c'},
+                        {'name':'d'},
+                        {'name':'e'}
+                    ]
+                }
+            
+        ]
+        mock_response_auth= MagicMock()
+
+        mock_response_auth.return_value = '92879e737e983748308748374987y489y8gf8wgef8ub'
+
+        with patch('twitter.tweepy.OAuthHandler') as mock_auth:
+            with patch('twitter.tweepy.API.get_place_trends') as mock_api:
+                mock_auth.return_value = mock_response_auth
+                
+                mock_api.return_value = mock_reponse_api.return_value
+
+                self.assertEqual(get_trends(), ['a','b','c','d','e'])
 
 if __name__ == "__main__":
     unittest.main()
