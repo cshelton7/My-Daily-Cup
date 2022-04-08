@@ -1,3 +1,4 @@
+"""Sentiment analysis API"""
 import os
 import paralleldots
 from paralleldots import config, similarity, ner, taxonomy, sentiment
@@ -10,6 +11,7 @@ config.set_api_key(os.getenv("SENTIMENT_KEY"))
 
 # get the emotion of the text
 def get_emotion(entry):
+    """Sentiment analysis API returning the tones of messages in user's journal entrys"""
     tones = []
     emotions = paralleldots.emotion(entry)
 

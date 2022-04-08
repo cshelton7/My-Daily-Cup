@@ -48,6 +48,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    """Loads user ID of user"""
     return Joes.query.get(int(user_id))
 
 
@@ -196,6 +197,7 @@ def delete_entry():
 
 @app.route("/add_entry", methods=["GET", "POST"])
 def add():
+    """Function to add entry to user journals"""
     # new entry object information
     poster = current_user.id
     title = flask.request.form["title"]

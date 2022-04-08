@@ -47,3 +47,7 @@ Another thing to know before using this API is that you need to install their li
 
 pip install paralleldots
 
+#Linting
+
+Disabled linter for the tests.py as this is just for testing logic in our API
+
