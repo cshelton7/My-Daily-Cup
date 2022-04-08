@@ -12,7 +12,7 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import get_entries, deleteEntry, deleteTaskList 
+from database_functions import get_entries, deleteEntry, deleteTaskList
 from models import db, Joes, Entry, Task
 
 from fun_fact import fun_fact
@@ -133,23 +133,24 @@ def home():
         twitter_trends=get_trends(),
     )
 
+
 @app.route("/display_task_lists", methods=["GET", "POST"])
 def display_task_list():
-   
+
     task_lists = Task.query.all()
     all_task_lists = len(task_lists)
 
-    if task_lists is None: 
+    if task_lists is None:
         return redirect(flask.url_for("home"))
     else:
         return render_template(
-            "home.html", task_lists = task_lists, 
-            all_task_lists = all_task_lists
+            "home.html", task_lists=task_lists, all_task_lists=all_task_lists
         )
+
 
 @app.route("/add_task_list", methods=["GET", "POST"])
 def add_task_list():
-    
+
     if flask.request.method == "POST":
         title = request.form.get("task_list_title")
         content = request.form.get("task_entry")
@@ -162,12 +163,14 @@ def add_task_list():
 
     return flask.redirect(flask.url_for("home"))
 
+
 @app.route("/delete_task_list", methods=["GET", "POST"])
 def delete_task_list():
     if flask.request.method == "POST":
         index = request.form.get("delete_task_list")
         deleteTaskList(index)
     return flask.redirect(flask.url_for("home"))
+
 
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")
