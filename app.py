@@ -20,7 +20,7 @@ from nyt import nyt_results
 
 from twitter import get_trends
 from nasa import nasa_picture
-
+from formatDate import formation
 from sentiment import get_emotion
 from nasa import nasa_picture
 
@@ -164,13 +164,14 @@ def users_entries():
     prev_entries = get_entries(current_user.id)
     # adding tone aspect for each entry
     tones = []
-    print(prev_entries[0].timestamp)
-    if prev_entries is None:
-        flask.flash("Sorry, you have no entries at the moment, please add one.")
+    if len(prev_entries)==0:
+        print('here')
+        flask.flash("Sorry, you have no entries at the moment, please add one at the bottom.")
         return redirect(flask.url_for("home"))
     else:
         for entry in prev_entries:
-            tones.append(get_emotion(entry))
+            pass
+            #tones.append(get_emotion(entry))
         return render_template(
             "entries.html",
             user_entries=prev_entries,
@@ -203,7 +204,7 @@ def add():
     contents = flask.request.form["entry"]
 
     newEntry = Entry(
-        user=poster, title=title, content=contents, timestamp=datetime.now()
+        user=poster, title=title, content=contents, timestamp=formation(datetime.now())
     )
     db.session.add(newEntry)
     db.session.commit()
