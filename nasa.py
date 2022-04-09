@@ -11,6 +11,7 @@ NASA_KEY = os.getenv("NASA_KEY")
 def nasa_picture():
     """Displays the daily picture from nasa"""
     responses = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={NASA_KEY}")
+    print(responses)
     responses_json = responses.json()
     picture = responses_json["hdurl"]
     explanation = responses_json["explanation"]
@@ -21,3 +22,6 @@ def nasa_picture():
     }
 
     return nasa_result
+
+if __name__=='__main__':
+    print(nasa_picture())
