@@ -208,7 +208,7 @@ def add():
     title = flask.request.form["title"]
     contents = flask.request.form["entry"]
 
-    newEntry = Entry(
+    new_entry = Entry(
         user=poster, title=title, content=contents, timestamp=formation(datetime.now())
     )
     db.session.add(new_entry)
