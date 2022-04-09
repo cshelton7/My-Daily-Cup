@@ -187,19 +187,6 @@ def delete_task_list():
     return flask.redirect(flask.url_for("home"))
 
 
-# route to apply user settings
-# this is still in progress. how to store preferences, etc
-@app.route("/settings")
-@login_required
-def settings():
-    """
-    Home page of application
-    """
-    return render_template(
-        "settings.html",
-    )
-
-
 @app.route("/view_entries", methods=["GET", "POST"])
 @login_required
 def users_entries():
