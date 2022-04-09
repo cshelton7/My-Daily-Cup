@@ -1,4 +1,3 @@
-"""Sentiment analysis API"""
 import os
 import paralleldots
 from paralleldots import config
@@ -11,7 +10,6 @@ config.set_api_key(os.getenv("SENTIMENT_KEY"))
 
 # get the emotion of the text
 def get_emotion(entry):
-    """Sentiment analysis API returning the tones of messages in user's journal entrys"""
     tones = []
     emotions = paralleldots.emotion(entry)
 
@@ -30,7 +28,10 @@ def get_emotion(entry):
             tones.append(data[0])
     # case to make sure a tone is shown
     if len(tones) == 0:
-        tones.append(max["emotion"])
+        try:
+            tones.append(max["emotion"])
+        except:
+            tones.append("Bored")
 
     # correcting the 'fear' to 'fearful' for a better sound
     for i in range(len(tones)):

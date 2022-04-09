@@ -10,7 +10,8 @@ load_dotenv(find_dotenv())
 
 # Hardcoded the lat/lon until I can figure out best way to implement geolocation feature
 LAT = 33.7499
-LON = 84.4000
+LON = -84.4000
+
 OPENWEATHER_URL = (
     f"https://api.openweathermap.org/data/2.5/weather?lat={LAT}&lon={LON}&appid="
 )
