@@ -76,9 +76,38 @@
             <input type="text" placeholder="How are you feeling today?" name="entry">
             <input type="submit" value="Post">
         </form>
-        <!-- next add task form -->
     </div>
+        <!-- task form added. issue with columns duplicating on webpage refresh. -->
 
+    <div id ="add_task_list"> 
+        <form action= "/add_task_list" method="POST">
+            <input type = "text" placeholder = "Create A New Task List!" name = "task_list_title">
+            <input type="text" placeholder = "Input Your First Task!" name = "task_entry">
+            <input type="submit" value ="Add">
+        </form>
+      
+    
+    </div>
+    <h3>Here are your current task lists!</h3> 
+
+    <div class="task_list_display">
+        {% for i in all_task_lists %}
+            <p>Task List: <b>{{task_lists[i].title}}</b>
+                <form action = "/delete_task_list" method = "POST">
+                    <button type = "submit" value = {{task_lists[i].id}} name = "delete_task_list"> Delete Task List</button>
+                </form>
+            </p>
+            <p>Tasks: <b> {{task_lists[i].content}}</b></p>
+            <form action="/home" method = "POST">
+                <input type = "text" placeholder="Input New Task!" name = "task_entry">
+                <input type = "submit" value = "+">
+            </form>
+            
+                <form action = "/home" method = "POST">
+                    <button type = "submit" value = {{task_lists[i].content}} name = "delete_task_entry"> Delete Task</button>
+                </form>
+        {% endfor %}
+    </div>
 </body>
 
 </html>
