@@ -12,7 +12,12 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import get_entries, deleteEntry, get_task_lists, delete_task_list
+from database_functions import (
+    get_entries,
+    deleteEntry,
+    get_task_lists,
+    delete_task_list,
+)
 from models import db, Joes, Entry, Task
 
 from fun_fact import fun_fact
@@ -144,8 +149,8 @@ def home():
 
 @app.route("/add_task_list", methods=["GET", "POST"])
 def add_task_list():
-    '''this function adds a task list when the user submits the task list title and task a 
-    single task'''
+    """this function adds a task list when the user submits the task list title and task a
+    single task"""
 
     if flask.request.method == "POST":
         user = current_user.id
@@ -163,7 +168,7 @@ def add_task_list():
 
 @app.route("/display_task_lists", methods=["GET", "POST"])
 def display_task_list():
-    '''this function displays tasks list according to user ID'''
+    """this function displays tasks list according to user ID"""
 
     task_lists = get_task_lists(current_user.id)
 
@@ -174,8 +179,8 @@ def display_task_list():
 
 @app.route("/delete_task_list", methods=["GET", "POST"])
 def delete_task_list():
-    '''when user presses the delete button, this function calls
-    the deleteTaskList function from database_functions.py'''
+    """when user presses the delete button, this function calls
+    the deleteTaskList function from database_functions.py"""
 
     if flask.request.method == "POST":
         index = request.form.get("delete_task_list")
