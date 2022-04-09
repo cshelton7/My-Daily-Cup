@@ -12,7 +12,7 @@ To ensure Openweather works, request an API Key from here
 'https://openweathermap.org/'
 
 After recieving an API Key, create a .env file in the directory (if you have not done so already)
-and paste 'OPENWEATHER_KEY = "<YOUR_API_KEY_HERE>"'
+and paste `OPENWEATHER_KEY = "<YOUR_API_KEY_HERE>"`
 
 Next install 
 pip install geocoder
@@ -27,7 +27,7 @@ To use this library in your app, you must make sure to generate a secret key to 
 
 To generate your key, run:
 
-python3 -c 'import secrets; print(secrets.token_hex())'
+`python3 -c 'import secrets; print(secrets.token_hex())`
 
 
 # Twitter API
@@ -38,16 +38,20 @@ You will also need to upgrade your account to "Elevated" which will give you acc
 Store the keys somewhere safe where you can retrieve them for your requests to to the twitter API.
 
 # Sentiment Analysis API 
-To use ParallelDots' APIs, you must obtain a key by signing up at https://dashboard.komprehend.io/signUp. Once you get your key, place it in your .env file and Heroku config variables.
+To use ParallelDots' APIs, you must obtain a key by signing up at https://dashboard.komprehend.io/signUp. Once you get your key, place it in your `.env` file and Heroku config variables.
 
 In your .env:
-'SENTIMENT_KEY = "<YOUR_API_KEY_HERE>"'
+`SENTIMENT_KEY = "<YOUR_API_KEY_HERE>"`
 
 Another thing to know before using this API is that you need to install their library for Python by running:
 
-pip install paralleldots
+`pip install paralleldots`
 
-#Linting
+# Linting
 
-Disabled linter for the tests.py as this is just for testing logic in our API
+Disabled linter for the `tests.py` as this is just for testing logic in our API
+Disabled linting in `models.py` which is our database model due to multiple false positives such as no member and too few classes.
+Disabled nomember error in `database_functions.py` and `app.py`. This can also be resolved by adding loading the installed plugin to your `settings.json` file using
+` "python.linting.pylintArgs": ["--load-plugins", "pylint_flask_sqlalchemy", "pylint_flask"]`
+
 
