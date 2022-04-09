@@ -1,7 +1,7 @@
 """Sentiment analysis API"""
 import os
 import paralleldots
-from paralleldots import config, similarity, ner, taxonomy, sentiment
+from paralleldots import config
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())

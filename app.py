@@ -1,7 +1,9 @@
+# pylint: disable=no-member
+"""App routing and logic of application, application runs based off this file"""
 import os
-import flask
-from flask import Flask, render_template, redirect, flash, request, Blueprint
 from datetime import datetime
+import flask
+from flask import Flask, render_template, redirect, request
 from flask_login import (
     LoginManager,
     login_required,
@@ -12,7 +14,7 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import get_entries, deleteEntry
+from database_functions import get_entries, delete_Entry
 from models import db, Joes, Entry
 
 from fun_fact import fun_fact
@@ -66,14 +68,14 @@ def login():
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
         try:
-            userInfo = Joes.query.filter_by(email=email).first()
-            if check_password_hash(userInfo.password, password):
-                login_user(userInfo)
+            user_info = Joes.query.filter_by(email=email).first()
+            if check_password_hash(user_info.password, password):
+                login_user(user_info)
                 return flask.redirect(flask.url_for("home"))
                 # if the user isn't logged in, the password is incorrect
                 flask.flash("Password is not correct. Please try again.")
         # if the user does not exist, redirect to signup
-        except:
+        except LookupError:
             flask.flash("No user with that email found. Register below!")
             return flask.redirect(flask.url_for("signup"))
     return render_template(
@@ -96,19 +98,20 @@ def signup():
         # hash the password to store in the db
         try:
             # includes password hashing with the 256 bit-long encrypting method
-            registerUser = Joes(
+            register_user = Joes(
                 email=email,
                 username=username,
                 password=generate_password_hash(password, method="sha256"),
             )
-            db.session.add(registerUser)
+            db.session.add(register_user)
             db.session.commit()
             flask.flash("You have successfully registered.")
             return flask.redirect(flask.url_for("login"))
         # if it throws an error, some input has conflicted with the rules
-        except:
+        except LookupError:
             flask.flash(
-                "Something went wrong. Either that username is taken or you have left an entry blank. Please try again."
+                "Something went wrong. Either that username is taken or \
+                you have left an entry blank. Please try again."
             )
             return flask.redirect(flask.url_for("signup"))
     return render_template("signup.html")
@@ -118,6 +121,7 @@ def signup():
 @app.route("/signout")
 @login_required
 def signout():
+    """Simple signout function using logout_user"""
     logout_user()
     flask.flash("You  have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
@@ -183,15 +187,15 @@ def users_entries():
 
 @app.route("/delete_entry", methods=["GET", "POST"])
 def delete_entry():
+    """Route to delete an entry in the users journal.
+    Here we will call a method that removes the
+    entry we deleted from the database. For the time
+    being I'll just print the value(index of entry deleted).
+    Later I'll replace with a database algorith"""
     if request.method == "POST":
-        """Here we will call a method that removes the
-        entry we deleted from the database. For the time
-        being I'll just print the value(index of entry deleted).
-        Later I'll replace with a database algorith"""
-
         index = int(flask.request.form["Delete"])
         # The following algorithm in the database functions file
-        deleteEntry(index)
+        delete_Entry(index)
     return flask.redirect(flask.url_for("users_entries"))
 
 
@@ -203,10 +207,10 @@ def add():
     title = flask.request.form["title"]
     contents = flask.request.form["entry"]
 
-    newEntry = Entry(
+    new_entry = Entry(
         user=poster, title=title, content=contents, timestamp=datetime.now()
     )
-    db.session.add(newEntry)
+    db.session.add(new_entry)
     db.session.commit()
     return flask.redirect(flask.url_for("users_entries"))
 
