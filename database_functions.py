@@ -18,6 +18,7 @@ def deleteEntry(entry_id):
 
 
 def deleteTaskList(task_list_id):
+    ''' function to delete task list from databse'''
     taskList = Task.query.filter_by(id=task_list_id).first()
     if taskList:
         db.session.delete(taskList)
@@ -25,5 +26,7 @@ def deleteTaskList(task_list_id):
 
 
 def getTaskLists(user_id):
+    '''function to get tasklists from database by user ID'''
+    
     taskLists = Task.query.filter_By(user=user_id).all()
     return taskLists
