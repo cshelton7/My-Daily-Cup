@@ -146,6 +146,7 @@ def home():
     )
 
 
+<<<<<<< Updated upstream
 # route to apply user settings
 # this is still in progress. how to store preferences, etc
 @app.route("/settings")
@@ -158,6 +159,45 @@ def settings():
         "settings.html",
     )
 
+=======
+@app.route("/add_task_list", methods=["GET", "POST"])
+def add_task_list():
+    """Function to add items to task list"""
+    if flask.request.method == "POST":
+        user = current_user.id
+        title = request.form.get("task_list_title")
+        content = request.form.get("task_entry")
+        print(title)
+        print(content)
+        task_list_information = Task(title=title, content=content, user=user)
+
+        db.session.add(task_list_information)
+        db.session.commit()
+
+    return flask.redirect(flask.url_for("home"))
+
+
+@app.route("/display_task_lists", methods=["GET", "POST"])
+def display_task_list():
+    """Function to display items in task list."""
+
+    task_lists = get_task_lists(current_user.id)
+
+    return render_template(
+        "home.html", task_lists=task_lists, all_task_lists=len(task_lists)
+    )
+
+
+@app.route("/delete_task_list", methods=["GET", "POST"])
+def delete_task_list():
+    """Function to delete item from task list"""
+    if flask.request.method == "POST":
+        index = request.form.get("delete_task_list")
+        delete_task_list(index)
+    return flask.redirect(flask.url_for("home"))
+
+
+>>>>>>> Stashed changes
 
 @app.route("/view_entries", methods=["GET", "POST"])
 @login_required
