@@ -1,4 +1,5 @@
 from models import db, Joes, Entry, Task
+
 """Functions to display and delete entries from user journals"""
 from models import db, Joes, Entry
 
@@ -17,16 +18,16 @@ def deleteEntry(entry_id):
         db.session.commit()
 
 
-def deleteTaskList(task_list_id):
-    ''' function to delete task list from databse'''
-    taskList = Task.query.filter_by(id=task_list_id).first()
-    if taskList:
-        db.session.delete(taskList)
+def delete_task_list(task_list_id):
+    ''' function to delete task list from database'''
+    task_list = Task.query.filter_by(id=task_list_id).first()
+    if task_list:
+        db.session.delete(task_list)
         db.session.commit
 
 
-def getTaskLists(user_id):
+def get_task_lists(user_id):
     '''function to get tasklists from database by user ID'''
-    
-    taskLists = Task.query.filter_By(user=user_id).all()
-    return taskLists
+
+    task_lists = Task.query.filter_By(user=user_id).all()
+    return task_lists

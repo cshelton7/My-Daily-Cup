@@ -43,10 +43,9 @@ class Task(db.Model):
     which will be stored in our database.
     """
 
-    id = db.Column(db.Integer, primary_key=True, default=None)
-    user = db.Column(db.Integer, nullable=False)
-    title = db.Column(db.String(50), nullable=True)
-    content = db.Column(db.String(1500), nullable=True)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    content = db.Column(db.String(1500), nullable=False)
 
     def __repr__(self):
         return "User: %s posted: %s, and titled it ' %s ', at " "the time of %s" % (
