@@ -15,7 +15,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
 from models import db, Joes, Entry, Task
-from database_functions import get_entries, delete_Entry, get_task_lists, delete_task_list
+from database_functions import (
+    get_entries,
+    delete_Entry,
+    get_task_lists,
+    delete_task_list,
+)
 from models import db, Joes, Entry
 
 from fun_fact import fun_fact
@@ -180,6 +185,7 @@ def delete_task_list():
         index = request.form.get("delete_task_list")
         delete_task_list(index)
     return flask.redirect(flask.url_for("home"))
+
 
 # route to apply user settings
 # this is still in progress. how to store preferences, etc
