@@ -33,10 +33,19 @@
 </head>
 
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <b>{{message}}</b>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <div id="nav">
         <a href="{{ url_for('home') }}"> Home</a>
         <a href="{{ url_for('users_entries') }}"> Entries</a>
+
         <a href="" onClick="toggleSettings()"> Settings</a>
+
         <a href="{{ url_for('signout') }}"> Log Out</a>
     </div>
 
@@ -74,6 +83,7 @@
     </div>
 
 
+
     <div id="twitter" class="card text-white bg-info mb-3" style="max-width: 18rem;">
         <div class="card-header">Trending via Twitter
             <label class="checkbox-inline">
@@ -96,6 +106,7 @@
     </div>
 
 
+
     <div id="maincontent">
         <h3>Journal Entry</h3>
         <form action="/add_entry" method="POST">
@@ -103,9 +114,38 @@
             <input type="text" placeholder="How are you feeling today?" name="entry">
             <input type="submit" value="Post">
         </form>
-        <!-- next add task form -->
     </div>
+        <!-- task form added. issue with columns duplicating on webpage refresh. -->
 
+    <div id ="add_task_list"> 
+        <form action= "/add_task_list" method="POST">
+            <input type = "text" placeholder = "Create A New Task List!" name = "task_list_title">
+            <input type="text" placeholder = "Input Your First Task!" name = "task_entry">
+            <input type="submit" value ="Add">
+        </form>
+      
+    
+    </div>
+    <h3>Here are your current task lists!</h3> 
+
+    <div class="task_list_display">
+        {% for i in all_task_lists %}
+            <p>Task List: <b>{{task_lists[i].title}}</b>
+                <form action = "/delete_task_list" method = "POST">
+                    <button type = "submit" value = {{task_lists[i].id}} name = "delete_task_list"> Delete Task List</button>
+                </form>
+            </p>
+            <p>Tasks: <b> {{task_lists[i].content}}</b></p>
+            <form action="/home" method = "POST">
+                <input type = "text" placeholder="Input New Task!" name = "task_entry">
+                <input type = "submit" value = "+">
+            </form>
+            
+                <form action = "/home" method = "POST">
+                    <button type = "submit" value = {{task_lists[i].content}} name = "delete_task_entry"> Delete Task</button>
+                </form>
+        {% endfor %}
+    </div>
 </body>
 
 </html>
