@@ -15,7 +15,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
 from models import db, Joes, Entry, Task
-from database_functions import get_entries, delete_Entry, get_task_lists, delete_task_list
+from database_functions import (
+    get_entries,
+    delete_Entry,
+    get_task_lists,
+    delete_task_list,
+)
 from models import db, Joes, Entry
 
 from fun_fact import fun_fact
@@ -181,18 +186,6 @@ def delete_task_title():
         delete_task_list(index)
     return flask.redirect(flask.url_for("home"))
 
-# route to apply user settings
-# this is still in progress. how to store preferences, etc
-@app.route("/settings")
-@login_required
-def settings():
-    """
-    Home page of application
-    """
-    return render_template(
-        "settings.html",
-    )
-
 
 @app.route("/view_entries", methods=["GET", "POST"])
 @login_required
@@ -211,8 +204,7 @@ def users_entries():
         return redirect(flask.url_for("home"))
     else:
         for entry in prev_entries:
-            pass
-            # tones.append(get_emotion(entry))
+            tones.append(get_emotion(entry))
         return render_template(
             "entries.html",
             user_entries=prev_entries,
@@ -244,7 +236,7 @@ def add():
     title = flask.request.form["title"]
     contents = flask.request.form["entry"]
 
-    newEntry = Entry(
+    new_entry = Entry(
         user=poster, title=title, content=contents, timestamp=formation(datetime.now())
     )
     db.session.add(new_entry)
