@@ -211,7 +211,6 @@ def add():
 
     newEntry = Entry(
         user=poster, title=title, content=contents, timestamp=formation(datetime.now())
-
     )
     db.session.add(new_entry)
     db.session.commit()
