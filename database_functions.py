@@ -1,7 +1,8 @@
 from models import db, Joes, Entry, Task
 
+# pylint: disable=no-member
 """Functions to display and delete entries from user journals"""
-from models import db, Joes, Entry
+from models import db, Entry
 
 
 def get_entries(user_id):
@@ -10,7 +11,7 @@ def get_entries(user_id):
     return entries
 
 
-def deleteEntry(entry_id):
+def delete_Entry(entry_id):
     """Function to delete entry from user journal"""
     entry = Entry.query.filter_by(id=entry_id).first()
     if entry:

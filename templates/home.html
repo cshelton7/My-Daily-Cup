@@ -9,6 +9,13 @@
 </head>
 
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <b>{{message}}</b>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <div id="nav">
         <a href="{{ url_for('home') }}"> Home</a>
         <a href="{{ url_for('users_entries') }}"> Entries</a>
@@ -60,27 +67,6 @@
         {{ nasa['explanation'] }}
         </div>
 
-
-    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-        <div class="card-header">Trending via Twitter
-            <label class="checkbox-inline">
-                <input type="checkbox" checked data-toggle="toggle"> First
-            </label>
-        </div>
-        <div class="card-body">
-            {% for tweet in twitter_trends %}
-            <p>{{ tweet }}</p>
-            {% endfor %}
-            <a href="https://twitter.com/explore/tabs/trending" class="card-link">Twitter</a>
-        </div>
-    </div>
-
-    <div class="nasa" style="border:1px solid black;">
-        <h3> Nasa Image of the Day</h3>
-        <img src="{{nasa['picture'] }}" width="250">
-        <br>
-        {{ nasa['explanation'] }}
-    </div>
 
 
     <div id="maincontent">

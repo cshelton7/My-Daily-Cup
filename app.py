@@ -1,7 +1,9 @@
+# pylint: disable=no-member
+"""App routing and logic of application, application runs based off this file"""
 import os
-import flask
-from flask import Flask, render_template, redirect, flash, request, Blueprint
 from datetime import datetime
+import flask
+from flask import Flask, render_template, redirect, request
 from flask_login import (
     LoginManager,
     login_required,
@@ -12,20 +14,16 @@ from flask_login import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import find_dotenv, load_dotenv
 from openweather import get_weather
-from database_functions import (
-    get_entries,
-    deleteEntry,
-    get_task_lists,
-    delete_task_list,
-)
 from models import db, Joes, Entry, Task
+from database_functions import get_entries, delete_Entry, get_task_lists, delete_task_list
+from models import db, Joes, Entry
 
 from fun_fact import fun_fact
 from nyt import nyt_results
 
 from twitter import get_trends
 from nasa import nasa_picture
-
+from formatDate import formation
 from sentiment import get_emotion
 from nasa import nasa_picture
 
@@ -72,14 +70,14 @@ def login():
         password = request.form.get("pass")
         # if the user exists, log in & redirect to home page
         try:
-            userInfo = Joes.query.filter_by(email=email).first()
-            if check_password_hash(userInfo.password, password):
-                login_user(userInfo)
+            user_info = Joes.query.filter_by(email=email).first()
+            if check_password_hash(user_info.password, password):
+                login_user(user_info)
                 return flask.redirect(flask.url_for("home"))
                 # if the user isn't logged in, the password is incorrect
                 flask.flash("Password is not correct. Please try again.")
         # if the user does not exist, redirect to signup
-        except:
+        except LookupError:
             flask.flash("No user with that email found. Register below!")
             return flask.redirect(flask.url_for("signup"))
     return render_template(
@@ -102,19 +100,20 @@ def signup():
         # hash the password to store in the db
         try:
             # includes password hashing with the 256 bit-long encrypting method
-            registerUser = Joes(
+            register_user = Joes(
                 email=email,
                 username=username,
                 password=generate_password_hash(password, method="sha256"),
             )
-            db.session.add(registerUser)
+            db.session.add(register_user)
             db.session.commit()
             flask.flash("You have successfully registered.")
             return flask.redirect(flask.url_for("login"))
         # if it throws an error, some input has conflicted with the rules
-        except:
+        except LookupError:
             flask.flash(
-                "Something went wrong. Either that username is taken or you have left an entry blank. Please try again."
+                "Something went wrong. Either that username is taken or \
+                you have left an entry blank. Please try again."
             )
             return flask.redirect(flask.url_for("signup"))
     return render_template("signup.html")
@@ -124,6 +123,7 @@ def signup():
 @app.route("/signout")
 @login_required
 def signout():
+    """Simple signout function using logout_user"""
     logout_user()
     flask.flash("You have successfully logged out.")
     return flask.redirect(flask.url_for("login"))
@@ -149,8 +149,6 @@ def home():
 
 @app.route("/add_task_list", methods=["GET", "POST"])
 def add_task_list():
-    """this function adds a task list when the user submits the task list title and task a
-    single task"""
 
     if flask.request.method == "POST":
         user = current_user.id
@@ -168,7 +166,6 @@ def add_task_list():
 
 @app.route("/display_task_lists", methods=["GET", "POST"])
 def display_task_list():
-    """this function displays tasks list according to user ID"""
 
     task_lists = get_task_lists(current_user.id)
 
@@ -179,14 +176,10 @@ def display_task_list():
 
 @app.route("/delete_task_list", methods=["GET", "POST"])
 def delete_task_list():
-    """when user presses the delete button, this function calls
-    the deleteTaskList function from database_functions.py"""
-
     if flask.request.method == "POST":
         index = request.form.get("delete_task_list")
         delete_task_list(index)
     return flask.redirect(flask.url_for("home"))
-
 
 # route to apply user settings
 # this is still in progress. how to store preferences, etc
@@ -210,13 +203,16 @@ def users_entries():
     prev_entries = get_entries(current_user.id)
     # adding tone aspect for each entry
     tones = []
-    print(prev_entries[0].timestamp)
-    if prev_entries is None:
-        flask.flash("Sorry, you have no entries at the moment, please add one.")
+    if len(prev_entries) == 0:
+        print("here")
+        flask.flash(
+            "Sorry, you have no entries at the moment, please add one at the bottom."
+        )
         return redirect(flask.url_for("home"))
     else:
         for entry in prev_entries:
-            tones.append(get_emotion(entry))
+            pass
+            # tones.append(get_emotion(entry))
         return render_template(
             "entries.html",
             user_entries=prev_entries,
@@ -228,16 +224,15 @@ def users_entries():
 
 @app.route("/delete_entry", methods=["GET", "POST"])
 def delete_entry():
+    """Route to delete an entry in the users journal.
+    Here we will call a method that removes the
+    entry we deleted from the database. For the time
+    being I'll just print the value(index of entry deleted).
+    Later I'll replace with a database algorith"""
     if request.method == "POST":
-        """Here we will call a method that removes the
-        entry we deleted from the     # new entry object information
-        entry we deleted from the database. For the time
-        being I'll just print the value(index of entry deleted).
-        Later I'll replace with a database algorith"""
-
         index = int(flask.request.form["Delete"])
         # The following algorithm in the database functions file
-        deleteEntry(index)
+        delete_Entry(index)
     return flask.redirect(flask.url_for("users_entries"))
 
 
@@ -250,9 +245,9 @@ def add():
     contents = flask.request.form["entry"]
 
     newEntry = Entry(
-        user=poster, title=title, content=contents, timestamp=datetime.now()
+        user=poster, title=title, content=contents, timestamp=formation(datetime.now())
     )
-    db.session.add(newEntry)
+    db.session.add(new_entry)
     db.session.commit()
     return flask.redirect(flask.url_for("users_entries"))
 
