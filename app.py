@@ -175,7 +175,7 @@ def display_task_list():
 
 
 @app.route("/delete_task_list", methods=["GET", "POST"])
-def delete_task_list():
+def delete_task_title():
     if flask.request.method == "POST":
         index = request.form.get("delete_task_list")
         delete_task_list(index)
