@@ -1,3 +1,4 @@
+Heroku Link: https://my-daily-cup.herokuapp.com/
 # My-Daily-Cup
 A personalized blog-based web application.
 
@@ -36,6 +37,7 @@ To use this API with your own app, you would first have to set up a twitter deve
 There you will be given your own api_key and secret_key.
 You will also need to upgrade your account to "Elevated" which will give you access to the "trends" that we use in our app.
 Store the keys somewhere safe where you can retrieve them for your requests to to the twitter API.
+Note, in order to use the Twitter API in the same manner as us, you must use the command: "pip install tweepy"
 
 # Sentiment Analysis API 
 To use ParallelDots' APIs, you must obtain a key by signing up at https://dashboard.komprehend.io/signUp. Once you get your key, place it in your `.env` file and Heroku config variables.
