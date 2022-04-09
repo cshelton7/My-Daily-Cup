@@ -52,26 +52,47 @@
     </div>
 
     <div id="weather_info" style="border:1px solid black;">
-        <h3>Weather</h3>
-        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p>
-        <p> {{ weather_info['weather'] }}</p>
-        <p>{{ weather_info['fahrenheit'] }}</p>
+
+    <h3>Weather</h3>
+        <p>{{ weather_info['city'] }}, {{ weather_info['country'] }}</p><p> {{ weather_info['weather'] }}</p> <p>{{ weather_info['fahrenheit'] }}</p>
     </div>
 
     <div id="fun_fact" style="border:1px solid black;">
-        <h3>Fun Facts</h3>
+    <h3>Fun Facts</h3>
         {{fun_fact}}
 
     </div>
 
     <div id="nyt_result" style="border:1px solid black;">
-        <!----TODO---->
-        <!----Fix formating on NYT API Lists Print With "(" AND NEED TO HREF LINKS ---->
-        <h3>Top NYT Articles</h3>
-        {% for row in nyt %}
-        <p>{{ row }}</p>
-        {% endfor %}
+    <!----TODO---->
+    <!----Fix formating on NYT API Lists Print With "(" AND NEED TO HREF LINKS ---->
+    <h3>Top NYT Articles</h3>
+         {% for row in nyt %}
+         <p>{{ row }}</p>
+     {% endfor %}
     </div>
+
+    
+      <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+        <div class="card-header">Trending via Twitter
+            <label class="checkbox-inline">
+                <input type="checkbox" checked data-toggle="toggle"> First
+              </label>
+        </div>
+        <div class="card-body">
+            {% for tweet in twitter_trends %}
+            <p>{{ tweet }}</p>
+            {% endfor %}
+            <a href="https://twitter.com/explore/tabs/trending" class="card-link" >Twitter</a>
+        </div>
+      </div>
+
+    <div class ="nasa" style="border:1px solid black;">
+        <h3> Nasa Image of the Day</h3>
+        <img src= "{{nasa['picture'] }}" width="250">
+        <br>
+        {{ nasa['explanation'] }}
+        </div>
 
 
     <div id="twitter" class="card text-white bg-info mb-3" style="max-width: 18rem;">
@@ -97,7 +118,7 @@
 
 
     <div id="maincontent">
-        <h3>Journal Entry</h3>
+    <h3>Journal Entry</h3>
         <form action="/add_entry" method="POST">
             <input type="text" placeholder="Title" name="title">
             <input type="text" placeholder="How are you feeling today?" name="entry">

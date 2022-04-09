@@ -14,6 +14,9 @@ To ensure Openweather works, request an API Key from here
 After recieving an API Key, create a .env file in the directory (if you have not done so already)
 and paste 'OPENWEATHER_KEY = "<YOUR_API_KEY_HERE>"'
 
+Next install 
+pip install geocoder
+
 # Fun Fact API
 Displays a random fun fact!
 https://aakhilv.notion.site/fun-bea0f2ca5aaa411f93a3a9fa1699ce39
@@ -43,4 +46,8 @@ In your .env:
 Another thing to know before using this API is that you need to install their library for Python by running:
 
 pip install paralleldots
+
+#Linting
+
+Disabled linter for the tests.py as this is just for testing logic in our API
 
